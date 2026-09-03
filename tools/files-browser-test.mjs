@@ -97,9 +97,10 @@ try {
     await page.locator('#file-state-action').click(); assert.equal(await visibleRows().count(), 8);
   });
   await test('navigation-folder-breadcrumbs', async () => {
-    await page.locator('[href="#shared"]').click(); assert.equal(await page.locator('#files-title').innerText(), '共有アイテム'); assert.equal(await visibleRows().count(), 5);
+    // Hash navigation is a queued browser event; assert the resulting view, not click timing.
+    await page.locator('[href="#shared"]').click(); await page.waitForFunction(() => document.querySelector('#files-title').textContent === '共有アイテム'); assert.equal(await visibleRows().count(), 5);
     assert.equal(await page.locator('[aria-current="page"]').count(), 1);
-    await page.locator('[data-files-route="my-drive"]').click();
+    await page.locator('[data-files-route="my-drive"]').click(); await page.waitForFunction(() => document.querySelector('#files-title').textContent === 'マイドライブ');
     await page.locator('#open-table-projects').click(); await page.waitForFunction(() => document.querySelector('#files-title').textContent === 'プロジェクト'); assert.equal(await visibleRows().count(), 1);
     await page.locator('#file-breadcrumbs a').click(); await page.waitForFunction(() => document.querySelector('#files-title').textContent === 'マイドライブ'); assert.equal(await visibleRows().count(), 8);
   });
@@ -121,6 +122,7 @@ try {
     await page.locator('#file-name').fill('プロジェクト'); await page.locator('#name-submit').click(); assert(await page.locator('#name-error').innerText());
     await page.locator('#file-name').fill('検証用フォルダ'); await page.locator('#name-submit').click(); assert.equal(await visibleRows().count(), 9);
     await page.locator('#create-desktop').click(); await page.locator('[data-files-create="document"]').click(); await page.keyboard.press('Escape');
+    await page.waitForFunction(() => document.activeElement?.id === 'create-desktop');
     assert(await page.locator('#create-desktop').evaluate((node) => node === document.activeElement));
   });
   await test('file-menu-preview-and-rename', async () => {
@@ -176,7 +178,7 @@ try {
       await page.keyboard.press('Tab'); assert(await page.locator('[data-files-route="my-drive"]').evaluate((node) => node === document.activeElement));
       await page.keyboard.press('Escape'); assert(await page.locator('#nav-toggle').evaluate((node) => node === document.activeElement));
       await page.locator('#nav-toggle').click(); await page.locator('[data-gfu-nav-scrim]').click({ position: { x: width - 4, y: 10 } }); assert(await page.locator('#nav-toggle').evaluate((node) => node === document.activeElement));
-      await page.locator('#nav-toggle').click(); await page.setViewportSize({ width: 600, height: 844 }); assert.equal(await page.locator('[inert]').count(), 0);
+      await page.locator('#nav-toggle').click(); await page.setViewportSize({ width: 600, height: 844 }); await page.waitForFunction(() => !document.querySelector('[inert]')); assert.equal(await page.locator('[inert]').count(), 0);
       await page.setViewportSize({ width: 840, height: 844 }); assert.equal(await page.locator('[aria-modal="true"]').count(), 0);
     }
   });
