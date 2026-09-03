@@ -167,6 +167,31 @@
 | Overlay | `.gfu-overlay` | Side sheet scrim |
 | Command palette | `.gfu-command-dialog` | `Ctrl/Cmd+K`, `[data-command-input]` |
 
+### Menu / Popover: 初期状態と開閉
+
+```html
+<button id="actions-trigger" type="button" class="gfu-button" data-variant="outlined"
+  aria-haspopup="menu" aria-controls="actions-menu" aria-expanded="false"
+  data-gfu-menu-trigger="actions-menu">操作を選ぶ</button>
+<div id="actions-menu" class="gfu-menu" role="menu" aria-labelledby="actions-trigger" data-open="false">
+  <button type="button" class="gfu-menu__item" role="menuitem">編集する</button>
+</div>
+
+<button id="details-trigger" type="button" class="gfu-button" data-variant="text"
+  aria-haspopup="dialog" aria-controls="details-popover" aria-expanded="false"
+  data-gfu-popover-trigger="details-popover">詳細を確認</button>
+<div id="details-popover" class="gfu-popover" role="dialog" aria-labelledby="details-title" data-open="false">
+  <h2 id="details-title" class="gfu-title">利用条件</h2>
+  <p class="gfu-body">この操作の対象と条件を確認してください。</p>
+</div>
+```
+
+CSSが閉状態の不可視化と開閉Transitionを管理し、JavaScriptが`data-open`・位置・Triggerの`aria-expanded`を管理する。アプリは表示用CSSや`hidden`の切り替えを追加しない。
+
+新規HTMLでは`hidden`属性を省略する。旧HTMLの初期`hidden`属性もサポートするが、ライブラリが解除した後に再付与しない。`hidden`クラスは解除対象ではなく禁止。動的DOMも接続後に同じTriggerで開く。初回にも閉状態を確定してから開くため、通常の再表示と同じ100msのOpacity／Transform遷移になる。
+
+Motionは装飾オプションではなく開閉契約の一部。Reduced motionによる軽減を除き、初回・再表示とも標準の動きを保持する。ブラウザー回帰テストは`npm run test:browser`。
+
 ### Dialog trigger
 
 ```html

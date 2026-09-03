@@ -151,6 +151,7 @@ npm run lint:design
 - 同一Action group内のFilled Button複数
 - FilledとDangerの同時配置
 - ラベルを持たないSearch
+- Menu／Popoverの`hidden`クラス、Reduced motion以外でのMotion無効化
 
 任意のHTMLを検査する場合:
 
@@ -160,6 +161,8 @@ node tools/design-lint.mjs path/to/pages
 
 ## チェック一式
 
+初回のみ`npm ci`と`npx playwright install chromium`を実行してください。ブラウザー検証用のPlaywrightは開発依存で、配布するUIのRuntime依存には含みません。
+
 ```bash
 npm run check
 ```
@@ -168,7 +171,12 @@ npm run check
 
 1. Tailwind CSSビルド
 2. Design Lint
-3. Smoke Test
+3. Smoke TestとLint回帰テスト
+4. ブラウザー回帰テスト（Menu／Popoverの初回表示・再表示・連続開閉・Reduced motion）
+
+既存のGoogle Chromeで検証する場合は、環境変数`GFU_BROWSER_CHANNEL=chrome`を設定するとChromiumの追加ダウンロードは不要です。PowerShellでは`$env:GFU_BROWSER_CHANNEL = 'chrome'`を設定してから実行します。
+
+Menu／Popoverを組み込む場合は、[初期状態と開閉のDOM例](docs/COMPONENTS.md#menu--popover-初期状態と開閉)を使ってください。新規HTMLに`hidden`属性や独自の表示切替処理を足す必要はありません。
 
 ## テーマ
 

@@ -376,6 +376,19 @@
       "border_default": "transparent",
       "max_width_px": 720
     },
+    "floating": {
+      "components": ["gfu-menu", "gfu-popover"],
+      "visibility_owner": "library CSS and JavaScript",
+      "initial_data_open": "false",
+      "recommended_initial_hidden_attribute": false,
+      "legacy_initial_hidden_attribute_supported": true,
+      "open_sequence": ["beforeopen event", "close previous panel", "remove initial hidden attribute", "set closed state", "position and flush closed layout", "set open state", "focus and open event"],
+      "consumer_must_not_toggle": ["hidden", "display", "opacity", "visibility", "transform"],
+      "forbidden_classes": ["hidden including responsive variants", "transition-none", "animate-none", "duration-0"],
+      "motion_override_exception": "prefers-reduced-motion / motion-reduce variants",
+      "first_and_subsequent_open_motion_required": true,
+      "regression_command": "npm run test:browser"
+    },
     "forms": {
       "label_always_visible": true,
       "placeholder_as_label": false,

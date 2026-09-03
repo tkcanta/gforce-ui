@@ -279,6 +279,14 @@ Tailwindでは原則として次だけを使う。
 - `prefers-reduced-motion`で実質1msにする。
 - Loop animationはProgressとSkeletonだけに許可する。
 
+### 表示状態とMotionの所有者
+
+- Menu／PopoverはライブラリのTriggerと`data-open`で開閉する。アプリ側で`hidden`、`display`、`opacity`、`visibility`、`transform`を切り替えない。
+- 初期HTMLは`data-open="false"`とし、`hidden`属性は付けない。既存HTMLの初期`hidden`属性は互換性のためライブラリが解除し、閉状態のレイアウトを確定してから開く。
+- `hidden`クラス（レスポンシブ指定を含む）は付けない。`transition-none`、`animate-none`、`duration-0`で標準Motionを消さない。`motion-reduce:`による軽減は許可する。
+- アニメーション前にDOMを削除・再作成しない。条件付き描画が必要なら、閉じた状態でDOMへ接続してからライブラリのTriggerで開く。
+- 初回表示と2回目以降は別々に検証する。通常設定ではOpacity／Transformの中間状態が存在し、Reduced motionでは実質1msになることを確認する。
+
 ---
 
 # 8. コンポーネント選択表
@@ -448,6 +456,13 @@ Searchは通常Fieldより高さを4px大きくし、Full radiusにする。
 - Close Icon Buttonに`aria-label=閉じる`。
 - Current pageの詳細編集に使う。重要な確認には使わない。
 
+## 9.8 Menu／Popover
+
+- 完全なDOM例と開閉契約は`COMPONENTS.md`の「Menu / Popover: 初期状態と開閉」を使う。
+- Triggerに対応する`data-gfu-menu-trigger`／`data-gfu-popover-trigger`、`aria-controls`、`aria-expanded="false"`を付ける。
+- 対象パネルは対応する`.gfu-menu`／`.gfu-popover`と`data-open="false"`を持つ。
+- 開閉のイベント処理とCSSをアプリ側で重ねて実装しない。選択による業務処理だけ追加する。
+
 ---
 
 # 10. ページ別固定レシピ
@@ -563,6 +578,8 @@ Text help 0〜1個
 [ ] Mobile 320pxで主要操作が失われないか
 [ ] KeyboardだけでMenu、Tabs、Dialogを操作できるか
 [ ] prefers-reduced-motionへ対応しているか
+[ ] Menu／Popoverの初期状態と開閉をライブラリへ任せているか
+[ ] 初回表示・再表示のMotionを実ブラウザーで検証したか
 [ ] npm run lint:design が成功するか
 ```
 

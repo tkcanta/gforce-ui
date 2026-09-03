@@ -533,6 +533,10 @@ Footer optional
 
 # 18. Overlay contract
 
+Menu／Popoverの表示状態とMotionはライブラリが所有する。アプリはTriggerと`data-open="false"`のDOMを使用し、独自の`hidden`／display切り替えを重ねない。初期`hidden`属性のある旧HTMLも、ライブラリが閉状態を確定してから開くことで初回Transitionを保持する。新規HTMLでは属性を省略する。
+
+DOM契約は`COMPONENTS.md`、生成時の禁止事項は`AI_RULES.md`、機械契約は`design-contract.json`の`composition_rules.floating`を参照する。
+
 ## Menu
 
 - 1回限りの操作一覧。

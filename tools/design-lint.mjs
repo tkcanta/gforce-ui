@@ -51,6 +51,18 @@ for (const file of files) {
     }
   }
 
+  // Floating surfaces own their visibility and motion; utility overrides bypass that contract.
+  for (const tag of source.matchAll(/<[a-z][a-z0-9-]*\b[^>]*>/gi)) {
+    const classes = tag[0].match(/\sclass\s*=\s*["']([^"']*)["']/i)?.[1].split(/\s+/) || [];
+    if (!classes.some((name) => ['gfu-menu', 'gfu-popover'].includes(name))) continue;
+    if (classes.some((name) => /(?:^|:)!?hidden!?$/.test(name))) {
+      add(file, source, tag.index, 'GFU018', 'Menu/Popoverのhiddenクラスは禁止。data-openとライブラリの開閉処理を使う');
+    }
+    if (classes.some((name) => !name.includes('motion-reduce:') && /(?:^|:)!?(?:transition-none|animate-none|duration-0)!?$/.test(name))) {
+      add(file, source, tag.index, 'GFU019', 'Menu/Popoverの標準motionを無効化しない。軽減はprefers-reduced-motionで行う');
+    }
+  }
+
   // All buttons must declare type.
   for (const buttonMatch of source.matchAll(/<button\b([^>]*)>/gi)) {
     const attrs = buttonMatch[1];

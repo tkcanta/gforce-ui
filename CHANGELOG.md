@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Menu／Popoverが初期`hidden`属性付きでも、閉状態を確定してから初回Transitionを開始するよう修正。
+- 初期状態とMotionの所有者をAIルール・機械契約・DOM例へ明記し、カタログの推奨HTMLから`hidden`属性を除去。
+- 標準の表示制御・Motionを妨げるクラスをDesign Lintで検出。
+- 初回・再表示・動的DOM・連続開閉・Escape/Focus・Reduced motionを検証するブラウザー回帰テストを`npm run check`へ追加。
+- 配布JavaScriptのコピーをNode標準APIに変更し、Windowsでも同じビルドコマンドを使用可能にした。
+
 ## 1.0.0 — 2026-09-03
 
 - Initial strict Google-like design contract

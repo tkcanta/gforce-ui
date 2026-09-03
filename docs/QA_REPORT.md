@@ -1,5 +1,20 @@
 # G-Force UI QA Report
 
+## 2026-09-04 — Floating初回Motionの回帰検証（Unreleased）
+
+`tools/floating-motion-test.mjs`を修正前の配布JSで実行し、`menu/hidden/first: missing transitions`を再現した。
+
+修正後はWindows上のheadless Chrome（`GFU_BROWSER_CHANNEL=chrome`）で`npm run check`が成功。Menu／Popoverそれぞれについて、通常DOM・初期hidden属性付き・動的挿入の計6ケースを検証した。
+
+- 初回・再表示ともOpacityとTransformのCSS Transitionが生成される。
+- 遷移途中のOpacityが0と1の間にあり、完了時に1になる。
+- Escapeで不可視になり、TriggerへFocusが戻る。
+- 開閉中の再操作でも最終状態が一致する。
+- Reduced motionではTransition durationが1ms以下になる。
+- Lint回帰テストでは、hiddenクラスとMotion無効化を拒否し、初期hidden属性とmotion-reduce指定を許容する。
+
+Playwrightはテスト専用の開発依存。以下の1.0.0リリース時の記録は履歴として保持する。
+
 Date: 2026-09-03
 Version: 1.0.0
 

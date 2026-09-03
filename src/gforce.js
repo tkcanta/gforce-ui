@@ -264,9 +264,12 @@ function openFloating(trigger, panel) {
   if (!emit(panel, 'gfu:beforeopen', {}, true)) return;
   closeFloating();
   panel.hidden = false;
+  panel.dataset.open = 'false';
+  positionFloating(trigger, panel);
+  // Establish the CSS closed state after display:none, including on the first open.
+  panel.getBoundingClientRect();
   panel.dataset.open = 'true';
   trigger.setAttribute('aria-expanded', 'true');
-  positionFloating(trigger, panel);
   activeFloating = { trigger, panel };
   const first = panel.querySelector('[role="menuitem"], button, a, input');
   requestAnimationFrame(() => first?.focus());
