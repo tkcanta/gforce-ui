@@ -88,8 +88,7 @@
 | Field | `.gfu-field` | `__label`, `__control`, `__input`, `__support` |
 | Textarea | `.gfu-field__textarea` | Field内 |
 | Dropdown | `.gfu-dropdown` | `[data-gfu-dropdown]`, label + single select。固定候補の既定 |
-| Select | `.gfu-field__select` | OS標準表示を意図する場合だけ |
-| Select wrapper | `.gfu-select-wrap` | Icon配置 |
+| Native select / 旧Select wrapper | 使用禁止 | 共通Dropdownへ移行（GFU028） |
 | Search | `.gfu-search` | `[data-gfu-search]`, accessible label |
 | Search clear | `.gfu-icon-button` | `[data-gfu-search-clear]` |
 | Combobox | `.gfu-combobox` | `[data-gfu-combobox]`, listbox |
@@ -116,6 +115,8 @@
 ```
 
 - idと対応するvisible labelは必須。flatな単一選択だけを扱います。複数選択・optgroupは拒否し、検索が必要ならComboboxを使います。
+- OS標準の選択メニューは禁止。旧`.gfu-field__select` / `.gfu-select-wrap`は廃止。カタログや作例でも例外にしません。native selectはこの部品内の値・フォームの正本とJS無効時のフォールバックに限ります。
+- 値と矢印の別行配置は禁止。単一行・右端の矢印を固定し、長い値のみellipsisにします。手書きのtrigger/arrow/listboxは禁止（GFU029）。
 - 外枠は8px radius。Focus/展開中は操作面全体へ2px相当のPrimary線を1本だけ表示。内側selectは非表示となり、OSの選択メニューは開きません。
 - listboxはPopover APIのtop layer。12px radius、shadow 2、通常borderなし、選択済みcheckmark、active色、disabledを統一。下側に表示し、空間が足りなければ上へ反転します。
 - Arrow/Home/End/PageUp/PageDown・先頭文字検索で候補を移動。Enter/Spaceで確定、Tabで確定して次へ移動、Escapeで取消。トリガーを再クリックして閉じた場合も未確定値は保存しません。

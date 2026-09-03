@@ -1124,7 +1124,7 @@
     background: var(--gfu-sys-color-surface-container);
     cursor: not-allowed;
   }
-  .gfu-field__input, .gfu-field__textarea, .gfu-field__select {
+  .gfu-field__input, .gfu-field__textarea {
     inline-size: 100%;
     min-inline-size: 0;
     border: 0;
@@ -1139,7 +1139,7 @@
     color: var(--gfu-sys-color-muted);
     opacity: 1;
   }
-  .gfu-field__input:disabled, .gfu-field__textarea:disabled, .gfu-field__select:disabled {
+  .gfu-field__input:disabled, .gfu-field__textarea:disabled {
     cursor: not-allowed;
   }
   .gfu-field__textarea {
@@ -1214,24 +1214,9 @@
       display: inline-flex;
     }
   }
-  .gfu-select-wrap {
-    position: relative;
-    inline-size: 100%;
-  }
-  .gfu-field__select {
-    appearance: none;
-    padding-inline-end: 2rem;
-    cursor: pointer;
-  }
-  .gfu-select-wrap > .gfu-icon {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline-end: 0.25rem;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
   .gfu-dropdown {
     display: inline-grid;
+    min-inline-size: 0;
     max-inline-size: 100%;
     gap: 0.375rem;
     vertical-align: top;
@@ -1248,6 +1233,7 @@
   }
   .gfu-dropdown__trigger {
     display: flex;
+    flex-flow: row nowrap;
     align-items: center;
     gap: 0.5rem;
     min-inline-size: 0;

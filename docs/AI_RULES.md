@@ -338,12 +338,20 @@ Switchへ「保存」ボタンを要求しない。保存が必要ならCheckbox
 | 1行テキスト | Text Field |
 | 複数行 | Textarea |
 | 候補2〜10件、検索不要 | Dropdown（`.gfu-dropdown[data-gfu-dropdown]`） |
-| OS標準の表示を意図する場合 | Native Select。固定デザインのフィルターでは使わない |
+| OS標準の選択メニュー | 禁止。カタログ・作例も例外にしない。共通Dropdownへ置換 |
 | 候補が多く検索必要 | Combobox |
 | 日付 | Native `input[type=date]` |
 | 時刻 | Native `input[type=time]` |
 | ファイル | File Upload |
 | 全体検索 | Search Field |
+
+### 単一選択の禁止事項（GFU028 / GFU029）
+
+- Dropdown外の`select`、旧`.gfu-field__select` / `.gfu-select-wrap`、OS標準popupの採用は禁止。
+- native selectは`.gfu-dropdown[data-gfu-dropdown]`内の値・フォームの正本としてのみ記述する。JS初期化後は表示せず、共通trigger/listboxへ委譲する。
+- 値と下向き矢印の別行配置、矢印の折返し・消失・重なりは禁止。triggerは単一行、矢印は右端の固定領域、長い値だけをellipsisにする。
+- trigger・arrow・listboxの手書きは禁止。生成DOMとCSSを利用側で上書きしない。
+- 閉状態だけで合格にしない。320/390/1366pxの閉・開・選択後、長い値、Light/Darkを確認し、値と矢印の縦中心・非重複を実測する。
 
 ## 8.4 Navigation
 

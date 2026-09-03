@@ -1,5 +1,16 @@
 # G-Force UI QA Report
 
+## 2026-09-04 — Native Select禁止・矢印の別行配置禁止
+
+1.2.0で「OS標準表示を意図する場合」という例外と旧Native Selectのカタログを残した判断が不適切だった。旧CSSは生成SVGの親spanに合わない直接子セレクターを使い、矢印が通常フローで次行へ落ちていた。
+
+- 旧Select/Select wrapperのCSS・公開契約を廃止。カタログは長い値のDropdownへ、詳細画面の作例も共通Dropdownへ移行。
+- `GFU028`はDropdown外のselectと旧クラスを拒否。`GFU029`は手書きtrigger/arrow/listboxを拒否。禁止事項はAI_RULESとJSON契約に明記。
+- 320/390/1366px・Light/Darkでnative select非表示、長い値の省略、値と矢印の縦中心・非重複、開いた候補と選択後を確認する。意図的に矢印を別行にしたfixtureが実寸検査で失敗することも確認する。
+- 全体の検査は30ブラウザグループ、32不正fixture、Floating motion 6ケース。`npm run check`で再実行できる。
+
+以下は各時点の履歴であり、旧Native Selectを許可する根拠にはしない。
+
 ## 2026-09-04 — Dropdown 1.2.0
 
 前回のレビューはフィルターの閉状態と値変更だけを確認し、OS標準popupと内側selectのfocus枠の見た目を見落としていた。ユーザー指摘を受け、共通Dropdownを追加し、ファイル種別・更新日の双方へ適用した。

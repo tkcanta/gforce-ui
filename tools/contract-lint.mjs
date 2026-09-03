@@ -43,6 +43,8 @@ export async function contractLint(file, source) {
       if (!labelled) add(node, 'GFU023', 'Form control requires an accessible name');
     }
     if (attr(node, 'aria-sort') !== undefined && node.tagName !== 'th' && attr(node, 'role') !== 'columnheader') add(node, 'GFU023', 'aria-sort belongs to th/columnheader, not button');
+    if ((node.tagName === 'select' && !(hasClass(node.parentNode, 'gfu-dropdown') && attr(node.parentNode, 'data-gfu-dropdown') !== undefined)) || hasClass(node, 'gfu-field__select') || hasClass(node, 'gfu-select-wrap')) add(node, 'GFU028', 'Native/legacy Select is forbidden, including catalog/examples. Use a direct select child of gfu-dropdown[data-gfu-dropdown]');
+    if (['gfu-dropdown__trigger', 'gfu-dropdown__arrow', 'gfu-dropdown__list'].some((name) => hasClass(node, name))) add(node, 'GFU029', 'Dropdown trigger/arrow/listbox are library-generated. Hand-authored layouts and wrapped arrows are forbidden');
     if (attr(node, 'data-gfu-dropdown') !== undefined) {
       const selects = nodes(node).filter((item) => item.tagName === 'select'), select = selects[0];
       const labelled = select && nodes(node).some((item) => item.tagName === 'label' && attr(item, 'for') === attr(select, 'id') && text(item).trim());

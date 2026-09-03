@@ -358,6 +358,34 @@ try {
     await page.keyboard.press('Escape'); await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.locator('#file-kind-trigger').click(); assert(await page.locator('#file-kind-listbox').evaluate((node) => getComputedStyle(node).transitionDuration.split(',').every((duration) => parseFloat(duration) <= .001))); await page.keyboard.press('Escape');
   });
+  await test('dropdown-native-ban-and-single-row-arrow', async () => {
+    const aligned = () => page.locator('.gfu-dropdown__trigger').evaluateAll((buttons) => buttons.every((button) => {
+      const value = button.querySelector('.gfu-dropdown__value').getBoundingClientRect(), arrow = button.querySelector('.gfu-dropdown__arrow').getBoundingClientRect(), box = button.getBoundingClientRect();
+      return value.width > 0 && arrow.width >= 20 && Math.abs(value.y + value.height / 2 - arrow.y - arrow.height / 2) <= 1 && value.right <= arrow.left && arrow.right <= box.right && box.right <= innerWidth;
+    }));
+    for (const width of [1366, 390, 320]) {
+      await page.setViewportSize({ width, height: 900 }); await page.goto(`${base}/index.html`); await page.evaluate(() => document.fonts.ready);
+      assert.equal(await page.locator('select:visible').count(), 0);
+      assert.equal(await page.locator('.gfu-select-wrap, .gfu-field__select').count(), 0);
+      for (const theme of ['light', 'dark']) {
+        await page.evaluate((theme) => GForceUI.theme.set(theme), theme);
+        assert(await aligned(), `value/arrow must share one row: ${width}/${theme}`);
+        await page.locator('#long-dropdown-trigger').click();
+        const menu = await page.locator('#long-dropdown-listbox').boundingBox(); assert(menu.x >= 8 && menu.x + menu.width <= width - 8);
+        if (theme === 'light') await page.screenshot({ path: resolve(output, `dropdown-long-${width}.png`) });
+        await page.keyboard.press('Escape'); await chooseDropdown('long-dropdown', 'マイドライブ'); assert(await aligned());
+        await page.evaluate(() => { const select = document.querySelector('#long-dropdown'); select.selectedIndex = 0; GForceUI.dropdown.sync(select); });
+      }
+      if (width === 320) await page.locator('#select-combobox').screenshot({ path: resolve(output, 'dropdown-catalog-320.png') });
+    }
+    await page.locator('#long-dropdown-trigger').evaluate((node) => { node.style.flexDirection = 'column'; });
+    assert.equal(await aligned(), false, 'known wrapped-arrow fixture must fail geometry gate');
+    await page.goto(`${base}/examples/list-detail.html`);
+    await page.locator('#list-detail-sheet-trigger').click(); await page.locator('#detail-status-trigger').click();
+    assert.equal(await page.locator('select:visible').count(), 0);
+    await page.locator('#detail-status-listbox').getByRole('option', { name: '下書き', exact: true }).click();
+    assert.equal(await page.locator('#detail-status').inputValue(), '下書き');
+  });
   await load(1440, 900);
   await page.evaluate(() => GForceUI.theme.set('dark'));
   await page.screenshot({ path: resolve(output, 'dark-desktop.png'), fullPage: true });

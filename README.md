@@ -11,7 +11,7 @@
 - Light／Dark
 - Compact／Comfortable／Touch density
 - WCAG 2.2 AAを基準にしたキーボード・フォーカス設計
-- 64種類のコンポーネント／パターン契約
+- 63種類のコンポーネント／パターン契約
 - 45以上の動作デモ
 - デザイン違反Lint
 - AI向け機械可読JSON契約
@@ -19,6 +19,8 @@
 > G-Force UIはGoogle公式製品ではなく、Google LLCとの提携・承認関係もありません。Material DesignおよびGoogle Workspaceの公開ガイドを参照し、業務用Webアプリ向けに独自実装したデザインシステムです。
 
 ## まず開くもの
+
+**禁止：OS標準の選択メニュー、値と下向き矢印の別行配置。** カタログ・作例も例外なし。旧Select/Select wrapperは廃止し、共通Dropdownへ統一しました。GFU028/GFU029とブラウザの実寸検査で再発を防ぎます。
 
 1.2.0では[共通Dropdown](docs/COMPONENTS.md#dropdown)を追加しました。単一のfocus枠、スタイル済みlistbox、キーボード操作、必須/無効/リセットをライブラリが所有します。[部品カタログ](index.html#select-combobox)で確認できます。
 
