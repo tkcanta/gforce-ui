@@ -1,4 +1,4 @@
-# bootstrap revision: final
+# bootstrap revision: final-2
 name: Bootstrap G-Force UI source
 
 on:
@@ -50,7 +50,7 @@ jobs:
         run: |
           set -euo pipefail
           cat .bootstrap/part*.b64 | tr -d '\n\r' | base64 --decode > gforce-src.tar.xz
-          echo 'a1cce681064c333fd007a85f05a584bea265093b72ee1c445e60e31c8297991d  gforce-src.tar.xz' | sha256sum --check --strict
+          echo 'f5e909ad3365f0664c3f1f0901f7513a304d2be7f68201215b469de5a7825361  gforce-src.tar.xz' | sha256sum --check --strict
           xz --test gforce-src.tar.xz
 
       - name: Extract source bundle
