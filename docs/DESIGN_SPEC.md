@@ -164,10 +164,13 @@ Viewport内のSolid Primary面積は目安12%以下。Primary containerは選択
 ## Font stack
 
 ```css
-"Roboto", "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", system-ui, sans-serif
+"GForce Roboto", "GForce Noto Sans JP", sans-serif
 ```
 
 Google Sansを必須資産にしない。Webアプリでの判読性と日本語フォールバックを優先する。
+Roboto / Noto Sans JPの可変フォントを `assets/fonts/` に同梱する。端末の同名フォントに左右されないよう独自CSS family名を使い、`local()`は指定しない。ライセンスと固定取得commitは同ディレクトリに記録する。
+
+`workspace-files` の寸法・構成は [WORKSPACE_FILES.md](WORKSPACE_FILES.md) を優先する。汎用Pageへ24px見出しを遡及適用せず、ファイル管理profileだけを24/32/400とする。
 
 ## Roles
 

@@ -1,5 +1,6 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
+import { contractLint } from './contract-lint.mjs';
 
 const root = resolve(process.cwd());
 const targets = process.argv.slice(2).length ? process.argv.slice(2) : ['examples'];
@@ -36,6 +37,7 @@ const forbiddenClassRules = [
 
 for (const file of files) {
   const source = await readFile(file, 'utf8');
+  for (const issue of await contractLint(file, source)) add(file, source, issue.index, issue.rule, issue.message);
 
   // Markup-level forbidden patterns.
   for (const match of source.matchAll(/\sstyle\s*=\s*["']/gi)) add(file, source, match.index, 'GFU009', 'Product HTMLのinline styleは禁止');

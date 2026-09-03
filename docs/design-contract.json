@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "G-Force UI",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "language": "ja",
     "objective": "Google WorkspaceおよびGoogle Cloud系Webアプリの視覚文法を、AIが推測せず再現できるように強制する",
     "compliance_mode": "whitelist",
@@ -26,6 +26,40 @@
     "モバイル320px幅で主要機能を失わせない",
     "ホバーだけに情報や操作を隠さない"
   ],
+  "profiles": {
+    "workspace-files": {
+      "version": "1.1.0",
+      "select_when": ["file management", "drive", "ファイル管理", "ファイル一覧"],
+      "page_type": "list_management",
+      "precedence": "profile-specific rules override generic page rules",
+      "spec_schema": "docs/workspace-files.schema.json",
+      "generator": "tools/generate-files.mjs",
+      "template": "templates/workspace-files.html",
+      "example": "examples/files.html",
+      "consumer_css_allowed": false,
+      "consumer_dom_edits_allowed": false,
+      "forbidden_default_slots": ["stats", "persistent_reminder", "marketing_description", "redundant_section_heading"],
+      "primary_surface_count": 1,
+      "title": { "size_px": 24, "line_px": 32, "weight": 400 },
+      "create": { "desktop": "left_navigation_tonal", "compact": "header_tonal", "visible_max": 1, "flow": "menu_then_name_dialog" },
+      "table_min_content_width_px": 720,
+      "table_row_px": 48,
+      "touch_row_px": 56,
+      "icon_target_px": 48,
+      "page_gutter_px": 16,
+      "surface_padding_desktop_px": 24,
+      "first_item_max_top_px": 280,
+      "viewport_min_visible_rows": { "1366x768": 6, "390x844": 4 },
+      "required_states": ["normal", "selected", "no-results", "first-empty", "loading", "error"],
+      "file_kind_tokens": {
+        "document": { "light": "#185ABC", "dark": "#AECBFA" },
+        "image": { "light": "#137333", "dark": "#81C995" },
+        "pdf": { "light": "#B3261E", "dark": "#F28B82" },
+        "meaning": "file identity, not success/warning/error"
+      },
+      "determinism": "same validated spec + recipe version + asset path => identical HTML; not arbitrary natural-language interpretation or cross-platform pixel identity"
+    }
+  },
   "foundations": {
     "colors": {
       "light": {
@@ -88,7 +122,8 @@
       "solid_primary_area_max_percent_per_viewport": 12
     },
     "typography": {
-      "font_stack": "Roboto, Noto Sans JP, Hiragino Sans, Yu Gothic UI, system-ui, sans-serif",
+      "font_stack": "GForce Roboto, GForce Noto Sans JP, sans-serif",
+      "font_source": "bundled variable fonts in assets/fonts, no local() lookup",
       "roles": {
         "display": {
           "size_px": 36,
@@ -574,6 +609,7 @@
       "pagination",
       "side_sheet_for_contextual_edit"
     ],
+    "workspace_files": ["validated_spec", "canonical_generator", "single_work_surface", "search_filters_selection", "table_or_list_by_content_width", "local_demo_states", "static_and_browser_gates"],
     "detail": [
       "breadcrumbs",
       "page_header",

@@ -1,0 +1,21 @@
+{
+  "recipeVersion": "1.1.0",
+  "profile": "workspace-files",
+  "appName": "Files",
+  "referenceDate": "2026-09-04",
+  "storage": { "usedGB": 6.8, "totalGB": 10 },
+  "files": [
+    { "id": "projects", "parentId": null, "name": "プロジェクト", "kind": "folder", "owner": "自分", "modified": "2026-09-04", "bytes": 0, "shared": false, "starred": true, "trashed": false },
+    { "id": "brand", "parentId": null, "name": "ブランドアセット", "kind": "folder", "owner": "自分", "modified": "2026-09-03", "bytes": 0, "shared": false, "starred": false, "trashed": false },
+    { "id": "planning", "parentId": null, "name": "2026年度 事業計画.docx", "kind": "document", "owner": "自分", "modified": "2026-09-04", "bytes": 524288, "shared": true, "starred": true, "trashed": false },
+    { "id": "meeting", "parentId": null, "name": "9月 定例ミーティング.docx", "kind": "document", "owner": "自分", "modified": "2026-09-04", "bytes": 81920, "shared": true, "starred": false, "trashed": false },
+    { "id": "guide", "parentId": null, "name": "サービスガイド.pdf", "kind": "pdf", "owner": "自分", "modified": "2026-09-02", "bytes": 2516582, "shared": false, "starred": false, "trashed": false },
+    { "id": "photo", "parentId": null, "name": "オフィス撮影.jpg", "kind": "image", "owner": "自分", "modified": "2026-08-27", "bytes": 4508876, "shared": false, "starred": false, "trashed": false },
+    { "id": "proposal", "parentId": null, "name": "ウェブサイト リニューアル提案.pdf", "kind": "pdf", "owner": "自分", "modified": "2026-08-20", "bytes": 1572864, "shared": true, "starred": false, "trashed": false },
+    { "id": "notes", "parentId": null, "name": "アイデアノート.docx", "kind": "document", "owner": "自分", "modified": "2026-08-15", "bytes": 32768, "shared": false, "starred": false, "trashed": false },
+    { "id": "timeline", "parentId": "projects", "name": "進行スケジュール.pdf", "kind": "pdf", "owner": "自分", "modified": "2026-09-03", "bytes": 163840, "shared": true, "starred": true, "trashed": false },
+    { "id": "logo", "parentId": "brand", "name": "ロゴ_横組み.png", "kind": "image", "owner": "自分", "modified": "2026-08-28", "bytes": 622592, "shared": false, "starred": false, "trashed": false },
+    { "id": "shared-guide", "parentId": null, "name": "チーム運用ルール.pdf", "kind": "pdf", "owner": "制作チーム", "modified": "2026-09-01", "bytes": 196608, "shared": true, "starred": false, "trashed": false },
+    { "id": "old", "parentId": null, "name": "旧デザイン案.pdf", "kind": "pdf", "owner": "自分", "modified": "2026-07-01", "bytes": 1048576, "shared": false, "starred": false, "trashed": true }
+  ]
+}

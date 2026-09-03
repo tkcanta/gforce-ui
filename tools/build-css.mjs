@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module';
-import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, writeFile, copyFile } from 'node:fs/promises';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -14,6 +14,7 @@ async function walk(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
   for (const entry of entries) {
+    if (['node_modules', '.git', 'test-results'].includes(entry.name)) continue;
     const path = join(directory, entry.name);
     if (entry.isDirectory()) files.push(...await walk(path));
     else files.push(path);
@@ -58,3 +59,4 @@ const css = compiler.build([...candidates].sort());
 await writeFile(outputPath, css, 'utf8');
 console.log(`Built ${outputPath}`);
 console.log(`Scanned ${files.length} files; supplied ${candidates.size} class candidates.`);
+await copyFile(join(root, 'src', 'workspace-files.js'), join(root, 'assets', 'workspace-files.js'));

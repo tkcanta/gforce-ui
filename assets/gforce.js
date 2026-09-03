@@ -1,9 +1,16 @@
 /**
- * G-Force UI 1.0.0
+ * G-Force UI 1.1.0
  * Vanilla JavaScript behavior layer.
  */
 
 const ICONS = {
+  inventory_2: '<path d="M3 3h18v5h-1v13H4V8H3V3Zm2 2v1h14V5H5Zm1 3v11h12V8H6Zm3 3h6v2H9v-2Z"/>',
+  cloud: '<path d="M7 18h11a5 5 0 0 0 .8-9.94A7 7 0 0 0 5.6 7.2 5.5 5.5 0 0 0 7 18Zm0-2a3.5 3.5 0 0 1-.1-7l.6-.01.16-.58A5 5 0 0 1 17 9.3l.2.7h.8a3 3 0 0 1 0 6H7Z"/>',
+  view_list: '<path d="M3 5h3v3H3V5Zm5 0h13v3H8V5ZM3 10.5h3v3H3v-3Zm5 0h13v3H8v-3ZM3 16h3v3H3v-3Zm5 0h13v3H8v-3Z"/>',
+  grid_on: '<path d="M3 3h18v18H3V3Zm2 2v6h6V5H5Zm8 0v6h6V5h-6ZM5 13v6h6v-6H5Zm8 0v6h6v-6h-6Z"/>',
+  image: '<path d="M3 3h18v18H3V3Zm2 2v14h14V5H5Zm1 12 4-5 3 3 2-2 3 4H6Zm10-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>',
+  picture_as_pdf: '<path d="M14 2H4v20h16V8l-6-6Zm-1 2 5 5h-5V4ZM6 11h3v5H8v-2H7v2H6v-5Zm1 1v1h1v-1H7Zm3-1h3v5h-3v-5Zm1 1v3h1v-3h-1Zm3-1h3v1h-2v1h2v1h-2v2h-1v-5Z"/>',
+  create_new_folder: '<path d="M10 4H2v16h20V6H12l-2-2Zm10 14H4V6h5.17l2 2H20v10Zm-7-8h-2v2H9v2h2v2h2v-2h2v-2h-2v-2Z"/>',
   menu: '<path d="M3 6h18V4H3v2Zm0 7h18v-2H3v2Zm0 7h18v-2H3v2Z"/>',
   search: '<path d="M9.5 3a6.5 6.5 0 1 0 3.98 11.64L19.85 21 21 19.85l-6.36-6.37A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 0 0 9.5 3Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z"/>',
   close: '<path d="m18.3 5.71-1.41-1.42L12 9.17 7.11 4.29 5.7 5.71 10.59 12 5.7 18.29l1.41 1.42L12 13.41l4.89 4.88 1.41-1.42L13.41 12l4.89-6.29Z"/>',
@@ -60,12 +67,13 @@ const ICONS = {
   logout: '<path d="M10.09 15.59 11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59ZM19 3H5a2 2 0 0 0-2 2v4h2V5h14v14H5v-4H3v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/>'
 };
 
-const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
+const qsa = (selector, root = document) => [...(root.matches?.(selector) ? [root] : []), ...root.querySelectorAll(selector)];
 
 function renderIcons(root = document) {
   qsa('[data-icon]:not([data-icon-rendered])', root).forEach((host) => {
     const name = host.dataset.icon;
-    const body = ICONS[name] || ICONS.widgets;
+    if (!Object.hasOwn(ICONS, name)) throw new Error(`GFU_UNKNOWN_ICON: ${name}`);
+    const body = ICONS[name];
     const size = host.dataset.iconSize || host.getAttribute('data-size') || '';
     const title = host.getAttribute('aria-label');
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -108,16 +116,21 @@ function cycleDensity() {
   const order = ['compact', 'comfortable', 'touch'];
   const current = document.documentElement.dataset.density || 'comfortable';
   const next = order[(order.indexOf(current) + 1) % order.length];
-  document.documentElement.dataset.density = next;
-  localStorage.setItem('gfu-density', next);
-  qsa('[data-gfu-density-label]').forEach((node) => { node.textContent = next; });
+  setDensity(next);
   showSnackbar(`表示密度を「${next}」に変更しました。`);
+}
+
+function setDensity(value) {
+  if (!['compact', 'comfortable', 'touch'].includes(value)) throw new Error(`GFU_INVALID_DENSITY: ${value}`);
+  document.documentElement.dataset.density = value;
+  localStorage.setItem('gfu-density', value);
+  qsa('[data-gfu-density-label]').forEach((node) => { node.textContent = value; });
 }
 
 function initPreferences() {
   const storedTheme = localStorage.getItem('gfu-theme');
   const preferredDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-  setTheme(storedTheme || (preferredDark ? 'dark' : 'light'));
+  setTheme(storedTheme || document.documentElement.dataset.theme || (preferredDark ? 'dark' : 'light'));
 
   const storedDensity = localStorage.getItem('gfu-density');
   if (['compact', 'comfortable', 'touch'].includes(storedDensity)) {
@@ -131,13 +144,45 @@ function initPreferences() {
 function initNavigation() {
   const drawer = document.querySelector('[data-gfu-nav-drawer]');
   const scrim = document.querySelector('[data-gfu-nav-scrim]');
-  if (!drawer) return;
+  if (!drawer || drawer.dataset.gfuReady === 'true') return;
+  drawer.dataset.gfuReady = 'true';
+  const compact = matchMedia('(max-width: 599px)');
+  const previousInert = new Map();
+  let returnTo;
+  const focusable = () => qsa('a[href],button:not([disabled]),input:not([disabled]),[tabindex="0"]', drawer).filter((node) => node.getClientRects().length);
+  const focusAfterOpen = () => {
+    if (drawer.dataset.open === 'true' && !drawer.contains(document.activeElement)) focusable()[0]?.focus();
+  };
+  drawer.addEventListener('transitionend', (event) => { if (event.target === drawer) focusAfterOpen(); });
 
-  const setOpen = (open) => {
+  const setOpen = (open, restoreFocus = true) => {
+    open = open && compact.matches;
+    const wasOpen = drawer.dataset.open === 'true';
+    if (open && !wasOpen) {
+      returnTo = document.activeElement;
+      const shell = drawer.parentElement;
+      [...shell.children, ...document.body.children].forEach((node) => {
+        if ([drawer, scrim, shell].includes(node) || node.matches('script,style,link')) return;
+        previousInert.set(node, node.inert);
+        node.inert = true;
+      });
+      drawer.setAttribute('role', 'dialog');
+      drawer.setAttribute('aria-modal', 'true');
+    }
+    if (!open) {
+      previousInert.forEach((value, node) => { node.inert = value; });
+      previousInert.clear();
+      drawer.removeAttribute('role');
+      drawer.removeAttribute('aria-modal');
+    }
     drawer.dataset.open = String(open);
     if (scrim) scrim.dataset.open = String(open);
     qsa('[data-gfu-nav-toggle]').forEach((button) => button.setAttribute('aria-expanded', String(open)));
-    if (open && window.innerWidth < 840) drawer.querySelector('a,button')?.focus();
+    // transitionend retries after inherited visibility becomes focusable.
+    if (open) requestAnimationFrame(focusAfterOpen);
+    else if (wasOpen && restoreFocus) {
+      (returnTo?.getClientRects().length ? returnTo : document.querySelector('main h1'))?.focus();
+    }
   };
 
   qsa('[data-gfu-nav-toggle]').forEach((button) => button.addEventListener('click', () => {
@@ -145,15 +190,25 @@ function initNavigation() {
   }));
   scrim?.addEventListener('click', () => setOpen(false));
   drawer.addEventListener('click', (event) => {
-    if (event.target.closest('a') && window.innerWidth < 840) setOpen(false);
+    if (event.target.closest('a, [data-gfu-dialog-open]') && compact.matches) setOpen(false);
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && drawer.dataset.open === 'true') setOpen(false);
+    if (drawer.dataset.open !== 'true') return;
+    if (event.key === 'Escape') { event.preventDefault(); setOpen(false); }
+    if (event.key === 'Tab') {
+      const items = focusable();
+      const outside = !drawer.contains(document.activeElement);
+      if (event.shiftKey && (outside || document.activeElement === items[0])) { event.preventDefault(); items.at(-1)?.focus(); }
+      else if (!event.shiftKey && (outside || document.activeElement === items.at(-1))) { event.preventDefault(); items[0]?.focus(); }
+    }
   });
+  compact.addEventListener('change', () => setOpen(false));
 }
 
 function initSearchFields(root = document) {
   qsa('[data-gfu-search]', root).forEach((search) => {
+    if (search.dataset.gfuReady === 'true') return;
+    search.dataset.gfuReady = 'true';
     const input = search.querySelector('input');
     const clear = search.querySelector('[data-gfu-search-clear]');
     if (!input || !clear) return;
@@ -246,7 +301,7 @@ let activeFloating = null;
 function positionFloating(trigger, panel) {
   const rect = trigger.getBoundingClientRect();
   panel.style.inset = 'auto';
-  panel.style.top = `${Math.min(window.innerHeight - panel.offsetHeight - 8, rect.bottom + 6)}px`;
+  panel.style.top = `${Math.max(8, Math.min(window.innerHeight - panel.offsetHeight - 8, rect.bottom + 6))}px`;
   const left = Math.max(8, Math.min(window.innerWidth - panel.offsetWidth - 8, rect.right - panel.offsetWidth));
   panel.style.left = `${left}px`;
 }
@@ -272,7 +327,7 @@ function openFloating(trigger, panel) {
   trigger.setAttribute('aria-expanded', 'true');
   activeFloating = { trigger, panel };
   const first = panel.querySelector('[role="menuitem"], button, a, input');
-  requestAnimationFrame(() => first?.focus());
+  requestAnimationFrame(() => { if (activeFloating?.panel === panel && panel.dataset.open === 'true') first?.focus(); });
   emit(panel, 'gfu:open');
 }
 
@@ -322,7 +377,7 @@ function initFloating(root = document) {
 }
 
 function initDialogs(root = document) {
-  root.addEventListener('click', (event) => {
+  if (root === document) root.addEventListener('click', (event) => {
     const open = event.target.closest('[data-gfu-dialog-open]');
     if (open) {
       const dialog = document.getElementById(open.dataset.gfuDialogOpen);
@@ -344,12 +399,21 @@ function initDialogs(root = document) {
   });
 
   qsa('dialog.gfu-dialog', root).forEach((dialog) => {
+    if (dialog.dataset.gfuReady === 'true') return;
+    dialog.dataset.gfuReady = 'true';
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const items = qsa('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex="0"]', dialog).filter((node) => node.getClientRects().length && getComputedStyle(node).visibility === 'visible');
+      if (event.shiftKey && document.activeElement === items[0]) { event.preventDefault(); items.at(-1)?.focus(); }
+      else if (!event.shiftKey && document.activeElement === items.at(-1)) { event.preventDefault(); items[0]?.focus(); }
+    });
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog && dialog.dataset.dismissible !== 'false') dialog.close('backdrop');
     });
     dialog.addEventListener('close', () => {
       const returnTo = dialog.dataset.returnFocus && document.getElementById(dialog.dataset.returnFocus);
-      returnTo?.focus();
+      if (returnTo?.getClientRects().length && getComputedStyle(returnTo).visibility === 'visible' && !returnTo.closest('[inert]')) returnTo.focus();
+      else if (dialog.dataset.returnFocus) document.querySelector('main h1[tabindex]')?.focus();
       emit(dialog, 'gfu:close', { returnValue: dialog.returnValue });
     });
   });
@@ -438,6 +502,8 @@ function initSnackbarTriggers(root = document) {
 
 function initSliders(root = document) {
   qsa('[data-gfu-slider]', root).forEach((slider) => {
+    if (slider.dataset.gfuReady === 'true') return;
+    slider.dataset.gfuReady = 'true';
     const input = slider.querySelector('input[type="range"]');
     const output = slider.querySelector('output');
     if (!input || !output) return;
@@ -449,6 +515,8 @@ function initSliders(root = document) {
 
 function initFileUploads(root = document) {
   qsa('[data-gfu-file-upload]', root).forEach((host) => {
+    if (host.dataset.gfuReady === 'true') return;
+    host.dataset.gfuReady = 'true';
     const input = host.querySelector('input[type="file"]');
     const status = host.querySelector('[data-gfu-file-status]');
     if (!input || !status) return;
@@ -526,14 +594,18 @@ function initComboboxes(root = document) {
 
 function initTables(root = document) {
   qsa('[data-gfu-table]', root).forEach((table) => {
+    if (table.dataset.gfuReady === 'true') return;
+    table.dataset.gfuReady = 'true';
     qsa('[data-sort-key]', table).forEach((button) => {
       button.addEventListener('click', () => {
         const key = button.dataset.sortKey;
         const tbody = table.tBodies[0];
         if (!tbody) return;
-        const ascending = button.getAttribute('aria-sort') !== 'ascending';
+        const header = button.closest('th');
+        const ascending = header.getAttribute('aria-sort') !== 'ascending';
+        qsa('th', table).forEach((item) => item.removeAttribute('aria-sort'));
         qsa('[data-sort-key]', table).forEach((item) => item.removeAttribute('aria-sort'));
-        button.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
+        header.setAttribute('aria-sort', ascending ? 'ascending' : 'descending');
         const rows = [...tbody.rows];
         rows.sort((a, b) => {
           const av = a.querySelector(`[data-key="${key}"]`)?.dataset.sortValue || a.querySelector(`[data-key="${key}"]`)?.textContent.trim() || '';
@@ -563,6 +635,8 @@ function initTables(root = document) {
 
 function initSteppers(root = document) {
   qsa('[data-gfu-stepper-demo]', root).forEach((demo) => {
+    if (demo.dataset.gfuReady === 'true') return;
+    demo.dataset.gfuReady = 'true';
     let current = Number(demo.dataset.step || 1);
     const items = qsa('.gfu-stepper__item', demo);
     const status = demo.querySelector('[data-gfu-step-status]');
@@ -686,6 +760,8 @@ function initCommandPalette() {
 
 function initCounterFields(root = document) {
   qsa('[data-gfu-counter-field]', root).forEach((field) => {
+    if (field.dataset.gfuReady === 'true') return;
+    field.dataset.gfuReady = 'true';
     const input = field.querySelector('input, textarea');
     const counter = field.querySelector('[data-gfu-counter]');
     if (!input || !counter) return;
@@ -723,32 +799,107 @@ function initGlobalActions(root = document) {
   });
 }
 
+function setProgress(element, rawValue) {
+  if (!element?.matches('.gfu-progress-linear')) throw new Error('GFU_PROGRESS_TARGET');
+  const number = Number(rawValue);
+  const value = Number.isFinite(number) ? Math.max(0, Math.min(100, number)) : 0;
+  element.dataset.value = String(value);
+  element.setAttribute('role', 'progressbar');
+  element.setAttribute('aria-valuemin', '0');
+  element.setAttribute('aria-valuemax', '100');
+  if (element.dataset.indeterminate === 'true') element.removeAttribute('aria-valuenow');
+  else element.setAttribute('aria-valuenow', String(value));
+  const bar = element.querySelector('.gfu-progress-linear__bar');
+  if (bar) bar.style.inlineSize = element.dataset.indeterminate === 'true' ? '' : `${value}%`;
+}
+
+function initTooltips() {
+  let host, tooltip, timer;
+  const hide = () => {
+    clearTimeout(timer);
+    if (host && tooltip) {
+      const ids = (host.getAttribute('aria-describedby') || '').split(' ').filter((id) => id && id !== tooltip.id);
+      if (ids.length) host.setAttribute('aria-describedby', ids.join(' '));
+      else host.removeAttribute('aria-describedby');
+    }
+    tooltip?.remove();
+    host = tooltip = null;
+  };
+  const position = () => {
+    if (!host || !tooltip) return;
+    const rect = host.getBoundingClientRect();
+    const gap = 8;
+    const top = host.dataset.tooltipPlacement === 'bottom' || rect.top < tooltip.offsetHeight + gap * 2
+      ? rect.bottom + gap : rect.top - tooltip.offsetHeight - gap;
+    tooltip.style.top = `${Math.max(gap, Math.min(innerHeight - tooltip.offsetHeight - gap, top))}px`;
+    tooltip.style.left = `${Math.max(gap, Math.min(innerWidth - tooltip.offsetWidth - gap, rect.left + (rect.width - tooltip.offsetWidth) / 2))}px`;
+  };
+  const show = (target) => {
+    if (target === host) { clearTimeout(timer); return; }
+    hide();
+    host = target;
+    timer = setTimeout(() => {
+      tooltip = document.createElement('div');
+      tooltip.id = 'gfu-active-tooltip';
+      tooltip.className = 'gfu-tooltip';
+      tooltip.setAttribute('role', 'tooltip');
+      tooltip.setAttribute('popover', 'manual');
+      tooltip.textContent = host.dataset.tooltip;
+      (host.closest('dialog') || document.body).append(tooltip);
+      tooltip.showPopover();
+      host.setAttribute('aria-describedby', `${host.getAttribute('aria-describedby') || ''} ${tooltip.id}`.trim());
+      position();
+      tooltip.addEventListener('pointerenter', () => clearTimeout(timer));
+      tooltip.addEventListener('pointerleave', () => { timer = setTimeout(hide, 150); });
+    }, 350);
+  };
+  document.addEventListener('pointerover', (event) => {
+    const target = event.target.closest('[data-tooltip]');
+    if (target) show(target);
+  });
+  document.addEventListener('pointerout', (event) => {
+    if (host?.contains(event.target) && !host.contains(event.relatedTarget)) {
+      clearTimeout(timer); timer = setTimeout(hide, 150);
+    }
+  });
+  document.addEventListener('focusin', (event) => { const target = event.target.closest('[data-tooltip]'); if (target) show(target); });
+  document.addEventListener('focusout', (event) => { if (host?.contains(event.target)) hide(); });
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') hide(); });
+  document.addEventListener('click', hide);
+  window.addEventListener('resize', position);
+  window.addEventListener('scroll', position, true);
+}
+
 function init(root = document) {
   if (root === document && document.documentElement.dataset.gfuInitialized === 'true') return;
   if (root === document) document.documentElement.dataset.gfuInitialized = 'true';
 
-  initPreferences();
+  if (root === document) {
+    initPreferences();
+    initPressedControls();
+    initFloating();
+    initSideSheets();
+    initSnackbarTriggers();
+    initDismissibles();
+    initCatalogSearch();
+    initScrollSpy();
+    initCommandPalette();
+    initLoadingDemos();
+    initGlobalActions();
+    initTooltips();
+  }
   renderIcons(root);
   initNavigation();
   initSearchFields(root);
   initTabs(root);
-  initPressedControls(root);
-  initFloating(root);
   initDialogs(root);
-  initSideSheets(root);
-  initSnackbarTriggers(root);
   initSliders(root);
   initFileUploads(root);
   initComboboxes(root);
   initTables(root);
   initSteppers(root);
-  initDismissibles(root);
-  initCatalogSearch();
-  initScrollSpy();
-  initCommandPalette();
   initCounterFields(root);
-  initLoadingDemos(root);
-  initGlobalActions(root);
+  qsa('.gfu-progress-linear', root).forEach((element) => setProgress(element, element.dataset.value));
 }
 
 const GForceUI = {
@@ -756,6 +907,10 @@ const GForceUI = {
   renderIcons,
   setTheme,
   cycleDensity,
+  theme: { set: setTheme, toggle() { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); } },
+  density: { set: setDensity, cycle: cycleDensity },
+  progress: { set: setProgress },
+  icons: Object.freeze(Object.keys(ICONS)),
   snackbar: { show: showSnackbar },
   dialog: {
     open(id) { document.getElementById(id)?.showModal(); },

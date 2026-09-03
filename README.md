@@ -20,12 +20,16 @@
 
 ## まず開くもの
 
+ファイル管理ツールを作る場合は **[workspace-files 固定レシピ](docs/WORKSPACE_FILES.md)** を使ってください。`examples/files.spec.json` のデータから `npm run generate:files` で [動作モック](examples/files.html) を生成します。AIがレイアウトを自由生成する必要はありません。
+
+1.1.0では同梱フォント、未登録API検出、生成物の完全一致、狭幅リスト、状態/キーボード/寸法のブラウザ検証を追加しています。同一性の保証は「同じ入力・レシピ版・assetパス」であり、任意の自然言語や異なるOSの完全なピクセル一致ではありません。
+
 `index.html`をブラウザで開くと、動作するコンポーネントカタログを確認できます。
 
 ローカルサーバーを使う場合:
 
 ```bash
-npm install
+npm ci
 npm run build
 npm run serve
 ```
@@ -133,7 +137,7 @@ AIや実装者は、仕様が衝突した場合に次の順序で従います。
 npm run lint:design
 ```
 
-既定では`examples/`を検査し、次をエラーにします。
+`npm run lint:design`は`index.html`と`examples/`を検査し、次をエラーにします。
 
 - 任意HEX／RGB／HSL
 - Tailwind arbitrary color
@@ -152,6 +156,8 @@ npm run lint:design
 - FilledとDangerの同時配置
 - ラベルを持たないSearch
 - Menu／Popoverの`hidden`クラス、Reduced motion以外でのMotion無効化
+- 未登録のclass／icon／hook、壊れたDialog DOM、リンク先CSSの独自上書き
+- workspace-filesの生成物の手編集、UI名を`strong`で太字にする指定
 
 任意のHTMLを検査する場合:
 
@@ -170,9 +176,10 @@ npm run check
 このコマンドは次を順番に実行します。
 
 1. Tailwind CSSビルド
-2. Design Lint
-3. Smoke TestとLint回帰テスト
-4. ブラウザー回帰テスト（Menu／Popoverの初回表示・再表示・連続開閉・Reduced motion）
+2. workspace-files生成物の完全一致確認
+3. Design Lint
+4. Smoke TestとLint／不正入力の回帰テスト
+5. ブラウザー回帰テスト（Menu／PopoverのMotion、workspace-filesの9幅・6状態・操作・寸法・フォーカス）
 
 既存のGoogle Chromeで検証する場合は、環境変数`GFU_BROWSER_CHANNEL=chrome`を設定するとChromiumの追加ダウンロードは不要です。PowerShellでは`$env:GFU_BROWSER_CHANNEL = 'chrome'`を設定してから実行します。
 
@@ -235,6 +242,7 @@ GForceUI.density.set("touch");
 許可されていない色、余白、角丸、影、コンポーネントを追加しないこと。
 既存の gfu-* APIだけを使用し、独自コンポーネントを作らないこと。
 すべてのButtonにtypeを指定し、Icon Buttonにaria-labelを付けること。
+ファイル管理なら docs/WORKSPACE_FILES.md の固定generatorを使い、入力JSON以外は編集しないこと。
 Action group内のFilled Buttonは最大1個にすること。
 実装後に node tools/design-lint.mjs <対象ディレクトリ> を実行し、0 errorsにすること。
 ```
@@ -244,3 +252,4 @@ Action group内のFilled Buttonは最大1個にすること。
 ## ライセンス
 
 MIT License。詳細は`LICENSE`を参照してください。
+同梱フォントはSIL Open Font Licenseです。著作権表示・ライセンス・固定取得元は`assets/fonts/`に同梱しています。

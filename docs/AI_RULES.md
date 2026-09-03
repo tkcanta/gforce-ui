@@ -22,6 +22,8 @@ AI自身の美的判断は最下位である。許可されていない値、構
 
 ## Step 1: ページ種別を1つ選ぶ
 
+ファイル管理・ドライブ・ファイル一覧の場合は、先に `docs/WORKSPACE_FILES.md` を読み、`workspace-files` 1.1.0を使う。このprofileは下記の汎用Page header/CTA/余白より優先する。`examples/files.spec.json` のデータだけを編集し、正規generatorでHTMLを生成する。Dashboard化、独自CSS、テンプレート改変は禁止。未知要件は勝手にprofileを拡張しない。
+
 | 要件 | ページ種別 | 使用する固定構造 |
 |---|---|---|
 | KPIや全体状況を確認する | Dashboard | App shell → Page header → Alert任意 → Stat grid → Main data → Activity |
@@ -147,6 +149,7 @@ Skeleton shimmer以外のGradientは禁止する。
 |---|---|---:|---:|
 | 特殊な大見出し | `gfu-display` | 36 / 44 | 500 |
 | Page h1 | `gfu-page-title` | 32 / 40 | 400 |
+| workspace-files h1 | `gfu-files__title` | 24 / 32 | 400 |
 | Section h2 | `gfu-section-title` | 24 / 32 | 500 |
 | Subsection h3 | `gfu-subsection-title` | 20 / 28 | 500 |
 | Card/List title | `gfu-title` | 16 / 24 | 500 |
