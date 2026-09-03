@@ -4,6 +4,8 @@
 
 抽象的な「Googleっぽく」「Material風に」という指示を排除し、弱いAIモデルでも同じ判断へ収束することを目的にしています。
 
+現在のバージョン：**1.2.0** · [バージョン履歴](#バージョン履歴)
+
 - Tailwind CSS v4
 - Vanilla JavaScript
 - React／Vue不使用
@@ -252,6 +254,29 @@ Action group内のFilled Buttonは最大1個にすること。
 ```
 
 詳細は`docs/AI_RULES.md`を参照してください。
+
+## バージョン履歴
+
+`package.json`のバージョンとGit履歴に基づく記録です。日付は日本時間。同じバージョン番号のまま行った追加修正は、コミットで区別しています。
+
+### 1.2.0 — 2026-09-04
+
+- **追加**：共通Dropdown。操作面全体のフォーカス枠、スタイル済みlistbox、キーボード操作、必須・無効・リセット状態を統一。ファイル種別・更新日フィルターに適用。[実装コミット](https://github.com/tkcanta/gforce-ui/commit/457259a56af01124761f7442127062f52f7277df)
+- **追加修正・禁止規則**：OS標準の選択メニューと、値・下向き矢印の別行配置を禁止。旧Native Select／Select wrapperを廃止し、カタログ・詳細画面の作例も共通Dropdownへ移行。[修正コミット](https://github.com/tkcanta/gforce-ui/commit/cc4cf6908e2a5a49cbb790356dba8648a96ffab5)
+- **検証**：GFU027／GFU028／GFU029、長い値・狭幅・Light/Dark・矢印の実寸検査を追加。追加修正後は30ブラウザ検証グループ、32不正fixture、Floating motion 6ケース。
+- **移行**：`.gfu-field__select`／`.gfu-select-wrap`は使用不可。[Dropdownの正規DOM](docs/COMPONENTS.md#dropdown)へ置換する。native selectは共通部品内の値・フォームの正本としてのみ保持する。
+
+### 1.1.0 — 2026-09-04
+
+- **追加**：`workspace-files`固定レシピ、入力JSON検証、HTML生成器。ファイル管理画面のレイアウト・状態・操作を共通化。[実装コミット](https://github.com/tkcanta/gforce-ui/commit/7f5f6ecf73419a990d43acea672c32aaef3cb850)
+- **改善**：Roboto／Noto Sans JPの同梱、文字・アイコン・余白の整合、モバイル一覧、検索・選択・作成・詳細・Undo、Drawer／Dialog／Tooltipのフォーカス制御。
+- **検証**：未登録APIや生成DOMの改変を拒否。9画面幅・6状態を含むブラウザ検査とGitHub Actionsを追加。非同期の画面遷移・Dialog終了を待つよう検査も修正。[検査修正コミット](https://github.com/tkcanta/gforce-ui/commit/b35c81fb433612fbf6653746e69ad6d5ab61d6b7)
+
+### 1.0.0 — 2026-09-03
+
+- **初期版**：Tailwind CSS v4＋Vanilla JavaScriptのUI基盤、Light/Dark、3段階Density、コンポーネントカタログと作例を追加。[実装コミット](https://github.com/tkcanta/gforce-ui/commit/2534d191d5c8d700922553765cac6afe9139d014)
+- **契約**：デザイン仕様、AIルール、機械可読JSON契約、禁止パターンのLint、Smoke Testを整備。
+- **2026-09-04の追加修正**：Menu／Popoverの初回表示Motionを修正し、初期状態・開閉の接続規則と回帰テストを追加。[修正コミット](https://github.com/tkcanta/gforce-ui/commit/0dec8db9f84d62a91a9a5c8b030ac3ac96b0499d)
 
 ## ライセンス
 
