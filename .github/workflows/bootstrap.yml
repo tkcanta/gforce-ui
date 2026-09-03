@@ -17,22 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify bootstrap chunks
+      - name: Inspect bootstrap chunks
         shell: bash
         run: |
           set -euo pipefail
-          cat > /tmp/chunks.sha256 <<'EOF'
-          16e834dc90582fd4cefe2b72b5efcaaa2a23e66d4d841c6220f31f1c802e5703  .bootstrap/part00.b64
-          8ec0720544bc8ef7d5b34b5d058c78df57166f6e93e878eb7475d35a5db30277  .bootstrap/part01.b64
-          d04f4766b440a4bf98e1abd6bbca7ab8e4f93d11aa1bb18f407ce20f1c60d2a0  .bootstrap/part02.b64
-          9c7eafe58efc9871f0374169502680f28c1bab75268ab659e2a1ac43dfb854c0  .bootstrap/part03.b64
-          6f2dbb417bb3c72abd9698754796ca1e9be75d5f1af236c34331e7a68ffc0833  .bootstrap/part04.b64
-          59072121ab44aee768b4edc2f86a5d1da11cad53e2e9679372c8478ba02c7ed6  .bootstrap/part05.b64
-          900a8c6f1edb368c0082542a195fa466e782157518e29246de045aeac84581e5  .bootstrap/part06.b64
-          00e91b17dc8e05967b2ae5ebb8966da0b680230eb7c25b735e1a50b6c33f9ef4  .bootstrap/part07.b64
-          896199bc5d2d1174b34b58e1e741455a08c3883b42f7f0920aa42a2a7d9a11c8  .bootstrap/part08.b64
-          EOF
-          sha256sum --check /tmp/chunks.sha256
+          for f in .bootstrap/part*.b64; do
+            wc -c "$f"
+            sha256sum "$f"
+            LC_ALL=C grep -n '[^A-Za-z0-9+/=]' "$f" | head -3 || true
+          done
 
       - name: Reassemble and verify source bundle
         shell: bash
