@@ -1,4 +1,4 @@
-# workspace-files 1.1.0
+# workspace-files 1.2.0
 
 ファイルを検索・開く・整理する画面専用の固定レシピ。Google Driveの情報密度と、Workspaceの静かな面構成を参照した独自実装です。Google公式製品・完全な画面複製ではありません。
 
@@ -42,6 +42,7 @@ node tools/design-lint.mjs ../index.html
 | 余白 | ページ左右16px、作業面内部はdesktop24px / compact0px |
 | 検索 | expanded時、外枠左端と作業面内容左端を一致。320pxの空検索入力は160px以上 |
 | 新規 | Desktopは左ナビのTonal、Compactは見出し右のTonal。常に表示1個 |
+| フィルター | 共通Dropdown。種別・更新日とも全体のfocus枠＋スタイル済みlistbox。内側selectだけの枠とOS標準popupは禁止 |
 | 形式 | 内容領域720px未満はList、以上はTable。viewport幅だけで決めない |
 | 行 | Table48px、Touch56px。名前14/20/400、アイコン24px、数値は右寄せ |
 | First row | 1366×768、390×844で上端280px以内。完全表示6件/4件以上 |
@@ -71,7 +72,7 @@ node tools/design-lint.mjs ../index.html
 ## AIへ貼る最小指示
 
 ```text
-gforce-uiの workspace-files 1.1.0 を使う。
+gforce-uiの workspace-files 1.2.0 を使う。
 READMEの導入版をGit commitで固定し、docs/WORKSPACE_FILES.mdを読む。
 examples/files.spec.jsonの形式に合わせ、データだけを編集する。
 テンプレート、CSS、DOM、アイコン、操作位置を自由生成・上書きしない。

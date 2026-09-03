@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve, dirname } from 'node:path';
 
-export const recipeVersion = '1.1.0';
+export const recipeVersion = '1.2.0';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const exact = (object, keys, path) => {
   if (!object || typeof object !== 'object' || Array.isArray(object)) throw new Error(`${path}: object required`);
@@ -15,7 +15,7 @@ const text = (value, max, path) => {
 const date = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
 export function validateSpec(spec) {
   exact(spec, ['recipeVersion', 'profile', 'appName', 'referenceDate', 'storage', 'files'], 'spec');
-  if (spec.recipeVersion !== recipeVersion || spec.profile !== 'workspace-files') throw new Error('Use workspace-files / recipeVersion 1.1.0; no automatic profile fallback');
+  if (spec.recipeVersion !== recipeVersion || spec.profile !== 'workspace-files') throw new Error(`Use workspace-files / recipeVersion ${recipeVersion}; no automatic profile fallback`);
   text(spec.appName, 24, 'appName');
   if (!date(spec.referenceDate)) throw new Error('referenceDate: valid ISO date required');
   exact(spec.storage, ['usedGB', 'totalGB'], 'storage');

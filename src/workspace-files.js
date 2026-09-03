@@ -22,6 +22,7 @@ const icon = (name) => `<span data-icon="${name}" data-size="24"></span>`;
 const announce = (message) => UI.snackbar.show(message);
 const resetFilters = () => {
   $('#file-search').value = ''; $('#file-kind').value = ''; $('#file-date').value = '';
+  UI.dropdown.sync($('#file-kind')); UI.dropdown.sync($('#file-date'));
   $('#file-search').dispatchEvent(new Event('input', { bubbles: true }));
 };
 function inScope(file) {

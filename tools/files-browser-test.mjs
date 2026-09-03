@@ -19,7 +19,7 @@ const server = createServer(async (request, response) => {
 await new Promise((done) => server.listen(0, '127.0.0.1', done));
 const base = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch({ channel: process.env.GFU_BROWSER_CHANNEL || undefined });
-const results = { recipe: 'workspace-files@1.1.0', viewports: [], checks: [] };
+const results = { recipe: 'workspace-files@1.2.0', viewports: [], checks: [] };
 const test = async (name, fn) => { await fn(); results.checks.push(name); console.log(`PASS ${name}`); };
 const context = await browser.newContext({ reducedMotion: 'reduce', locale: 'ja-JP' });
 const page = await context.newPage();
@@ -33,6 +33,10 @@ async function load(width = 1366, height = 768) {
   await page.evaluate(() => document.fonts.ready);
 }
 const visibleRows = () => page.locator('.gfu-files__table tbody tr:visible, .gfu-files__list li:visible');
+async function chooseDropdown(id, label) {
+  await page.locator(`#${id}-trigger`).click();
+  await page.locator(`#${id}-listbox`).getByRole('option', { name: label, exact: true }).click();
+}
 async function demo(state) {
   await page.locator('#account-trigger').click();
   await page.locator(`[data-files-demo="${state}"]`).click();
@@ -90,8 +94,8 @@ try {
     await page.keyboard.press('Control+k'); assert(await page.locator('#file-search').evaluate((node) => node === document.activeElement));
     await page.locator('#file-search').fill('事業計画'); assert.equal(await visibleRows().count(), 1);
     await page.locator('[data-gfu-search-clear]').click(); assert.equal(await visibleRows().count(), 8);
-    await page.locator('#file-kind').selectOption('pdf'); assert.equal(await visibleRows().count(), 2);
-    await page.locator('#file-date').selectOption('7'); assert.equal(await visibleRows().count(), 1);
+    await chooseDropdown('file-kind', 'PDF'); assert.equal(await visibleRows().count(), 2);
+    await chooseDropdown('file-date', '7日以内'); assert.equal(await visibleRows().count(), 1);
     await page.locator('#clear-filters').click(); assert.equal(await visibleRows().count(), 8);
     await page.locator('#file-search').fill('not-a-file'); assert(await page.locator('#file-state-title').innerText() === '一致するファイルがありません');
     await page.locator('#file-state-action').click(); assert.equal(await visibleRows().count(), 8);
@@ -193,7 +197,7 @@ try {
   });
   await test('keyboard-filters-menu-dialog-at-320', async () => {
     await load(320, 844);
-    await page.locator('#file-kind').focus(); await page.keyboard.press('Home'); await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
+    await page.locator('#file-kind-trigger').focus(); await page.keyboard.press('Home'); await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
     assert.equal(await page.locator('#file-kind').inputValue(), 'folder'); assert.equal(await visibleRows().count(), 2);
     await page.locator('#clear-filters').click();
     await page.locator('#create-compact').focus(); await page.keyboard.press('Enter');
@@ -293,6 +297,66 @@ try {
     });
     assert.equal(await fixture.locator('html').getAttribute('data-theme'), 'dark');
     await fixture.close();
+  });
+  await test('dropdown-visual-keyboard-form-and-motion', async () => {
+    for (const width of [1366, 390, 320]) {
+      await load(width, 844);
+      await page.evaluate(() => GForceUI.theme.set('light'));
+      const trigger = page.locator('#file-kind-trigger'), list = page.locator('#file-kind-listbox');
+      await trigger.focus(); const before = await trigger.boundingBox(); await page.keyboard.press('Enter');
+      assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+      assert(await trigger.evaluate((node) => node === document.activeElement));
+      const geometry = await list.boundingBox();
+      assert(geometry.x >= 8 && geometry.x + geometry.width <= width - 8 && geometry.y >= before.y + before.height + 7);
+      const style = await trigger.evaluate((node) => ({ outline: getComputedStyle(node).outlineWidth, shadow: getComputedStyle(node).boxShadow }));
+      assert.equal(style.outline, '0px'); assert.notEqual(style.shadow, 'none');
+      assert(await page.locator('#file-kind').isHidden());
+      assert.equal(await list.evaluate((node) => getComputedStyle(node).borderRadius), '12px');
+      assert.notEqual(await list.evaluate((node) => getComputedStyle(node).boxShadow), 'none');
+      await page.screenshot({ path: resolve(output, `dropdown-${width}.png`) });
+      await page.keyboard.press('ArrowDown'); assert.equal(await page.locator('#file-kind').inputValue(), '');
+      await page.keyboard.press('Escape'); assert.equal(await page.locator('#file-kind').inputValue(), '');
+      await chooseDropdown('file-kind', 'PDF'); assert.equal(await page.locator('#file-kind').inputValue(), 'pdf');
+      assert.equal(await page.locator('#file-kind-value').innerText(), 'PDF');
+      assert.equal((await trigger.boundingBox()).width, before.width);
+      await page.locator('#clear-filters').click(); assert.equal(await page.locator('#file-kind-value').innerText(), 'すべて');
+      await trigger.focus(); await page.keyboard.press('Home'); await page.keyboard.press('ArrowDown'); await page.keyboard.press('Tab');
+      assert.equal(await page.locator('#file-kind').inputValue(), 'folder');
+      assert(await page.locator('#file-date-trigger').evaluate((node) => node === document.activeElement));
+      await page.locator('#clear-filters').click();
+      await trigger.click(); await page.locator('#files-title').click(); assert.equal(await trigger.getAttribute('aria-expanded'), 'false');
+    }
+    await load(); await page.evaluate(() => GForceUI.theme.set('dark')); await page.locator('#file-kind-trigger').click();
+    await page.screenshot({ path: resolve(output, 'dropdown-dark.png') }); await page.keyboard.press('Escape');
+    await page.goto(`${base}/index.html`); await page.evaluate(() => document.fonts.ready);
+    const plan = page.locator('#plan-dropdown-trigger');
+    assert(await page.locator('#locked-dropdown-trigger').isDisabled());
+    assert.equal(await page.locator('#dropdown-form').evaluate((form) => form.reportValidity()), false);
+    assert.equal(await plan.getAttribute('aria-invalid'), 'true'); assert(await plan.evaluate((node) => node === document.activeElement));
+    await plan.press('t'); await plan.press('Enter'); assert.equal(await page.locator('#plan-dropdown').inputValue(), 'team');
+    assert.equal(await page.locator('#dropdown-form').evaluate((form) => new FormData(form).get('plan')), 'team');
+    assert.equal(await plan.getAttribute('aria-invalid'), 'false');
+    await page.locator('#dropdown-form [type="reset"]').click(); await page.waitForFunction(() => document.querySelector('#plan-dropdown-value').textContent === '選択してください');
+    await page.locator('#role-dropdown-trigger').focus(); await page.keyboard.press('End');
+    assert.equal(await page.locator('#role-dropdown-trigger').getAttribute('aria-activedescendant'), 'role-dropdown-option-1'); await page.keyboard.press('Escape');
+    await page.evaluate(() => { const select = document.querySelector('#role-dropdown'); select.value = 'editor'; GForceUI.dropdown.sync(select); GForceUI.init(select.parentElement); GForceUI.init(select.parentElement); });
+    assert.equal(await page.locator('#role-dropdown-value').innerText(), '編集者'); assert.equal(await page.locator('#role-dropdown-trigger').count(), 1);
+    await page.evaluate(() => { window.dropdownEvents = { input: 0, change: 0 }; for (const type of ['input', 'change']) document.querySelector('#role-dropdown').addEventListener(type, () => window.dropdownEvents[type]++); });
+    await chooseDropdown('role-dropdown', '閲覧者'); await chooseDropdown('role-dropdown', '閲覧者');
+    assert.deepEqual(await page.evaluate(() => window.dropdownEvents), { input: 1, change: 1 });
+    await page.locator('#select-combobox').screenshot({ path: resolve(output, 'dropdown-catalog.png') });
+    await page.evaluate(() => { const dialog = document.querySelector('#standard-dialog'); dialog.querySelector('.gfu-dialog__body').append(document.querySelector('#role-dropdown').parentElement); dialog.showModal(); });
+    await page.locator('#role-dropdown-trigger').click();
+    assert(await page.locator('#role-dropdown-listbox').evaluate((node) => { const rect = node.getBoundingClientRect(); return node.contains(document.elementFromPoint(rect.left + 24, rect.top + 24)); }));
+    await page.locator('#role-dropdown-listbox').getByRole('option', { name: '編集者', exact: true }).click(); await page.keyboard.press('Escape');
+    await page.evaluate(() => { const host = document.querySelector('#role-dropdown').parentElement; document.body.append(host); Object.assign(host.style, { position: 'fixed', bottom: '8px', right: '8px' }); });
+    await page.locator('#role-dropdown-trigger').click(); assert.equal(await page.locator('#role-dropdown-listbox').getAttribute('data-placement'), 'top');
+    const edge = await page.locator('#role-dropdown-listbox').boundingBox(), anchor = await page.locator('#role-dropdown-trigger').boundingBox();
+    assert(edge.x >= 8 && edge.x + edge.width <= 1358 && edge.y + edge.height <= anchor.y - 7); await page.keyboard.press('Escape');
+    await load(); await page.emulateMedia({ reducedMotion: 'no-preference' });
+    assert(await page.locator('#file-kind-trigger').evaluate((node) => { node.click(); return document.querySelector('#file-kind-listbox').getAnimations().some((animation) => animation.transitionProperty === 'opacity'); }));
+    await page.keyboard.press('Escape'); await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.locator('#file-kind-trigger').click(); assert(await page.locator('#file-kind-listbox').evaluate((node) => getComputedStyle(node).transitionDuration.split(',').every((duration) => parseFloat(duration) <= .001))); await page.keyboard.press('Escape');
   });
   await load(1440, 900);
   await page.evaluate(() => GForceUI.theme.set('dark'));

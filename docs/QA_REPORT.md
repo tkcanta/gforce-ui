@@ -1,5 +1,17 @@
 # G-Force UI QA Report
 
+## 2026-09-04 — Dropdown 1.2.0
+
+前回のレビューはフィルターの閉状態と値変更だけを確認し、OS標準popupと内側selectのfocus枠の見た目を見落としていた。ユーザー指摘を受け、共通Dropdownを追加し、ファイル種別・更新日の双方へ適用した。
+
+- native selectは値/フォームの正本として維持し、生成したbutton/comboboxとtop-layer listboxが表示を所有する。原本モックは変更しない。
+- 1366/390/320pxの開状態、単一focus枠、12pxのpopup、選択済みcheckmark、値変更後の幅不変、Light/Darkを検査・画像確認。
+- Arrow/Home/End/typeahead/Enter/Tab/Escape、取消、外側クリック、required/disabled/reset、FormData、input/change各1回、動的init、通常/軽減motionを検査。Dialog内のtop layerと画面端での上向き反転も確認。既存のファイル操作とFloating motionも再実行した。
+- `GFU027`で壊れたDropdown DOMを拒否。生成物の完全一致検査により、AIがOS標準selectや独自triggerへ戻す変更も拒否する。
+- 全体は29ブラウザ検証グループ、29不正fixture、既存Floating motion 6ケース。実行は `npm run check`、開状態の証跡は `test-results/files/dropdown-*.png`。
+
+スクリーンリーダー/全ブラウザの包括的な適合認証ではない。以下の1.1.0記録はその時点の履歴として残す。
+
 ## 2026-09-04 — workspace-files 1.1.0
 
 ファイル管理モックの25指摘を修正。検証は以下を別々に扱う。

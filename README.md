@@ -11,7 +11,7 @@
 - Light／Dark
 - Compact／Comfortable／Touch density
 - WCAG 2.2 AAを基準にしたキーボード・フォーカス設計
-- 63種類のコンポーネント／パターン契約
+- 64種類のコンポーネント／パターン契約
 - 45以上の動作デモ
 - デザイン違反Lint
 - AI向け機械可読JSON契約
@@ -19,6 +19,8 @@
 > G-Force UIはGoogle公式製品ではなく、Google LLCとの提携・承認関係もありません。Material DesignおよびGoogle Workspaceの公開ガイドを参照し、業務用Webアプリ向けに独自実装したデザインシステムです。
 
 ## まず開くもの
+
+1.2.0では[共通Dropdown](docs/COMPONENTS.md#dropdown)を追加しました。単一のfocus枠、スタイル済みlistbox、キーボード操作、必須/無効/リセットをライブラリが所有します。[部品カタログ](index.html#select-combobox)で確認できます。
 
 ファイル管理ツールを作る場合は **[workspace-files 固定レシピ](docs/WORKSPACE_FILES.md)** を使ってください。`examples/files.spec.json` のデータから `npm run generate:files` で [動作モック](examples/files.html) を生成します。AIがレイアウトを自由生成する必要はありません。
 

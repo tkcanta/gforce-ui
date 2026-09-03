@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "G-Force UI",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "language": "ja",
     "objective": "Google WorkspaceおよびGoogle Cloud系Webアプリの視覚文法を、AIが推測せず再現できるように強制する",
     "compliance_mode": "whitelist",
@@ -28,7 +28,7 @@
   ],
   "profiles": {
     "workspace-files": {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "select_when": ["file management", "drive", "ファイル管理", "ファイル一覧"],
       "page_type": "list_management",
       "precedence": "profile-specific rules override generic page rules",
@@ -457,6 +457,20 @@
       "error_message_requires_repair_instruction": true
     }
   },
+  "dropdown_contract": {
+    "root": ".gfu-dropdown[data-gfu-dropdown]",
+    "source": "one flat, single select with id and a visible label[for]; keep native name/value/options",
+    "generated_dom_owner": "library only; do not author trigger or listbox",
+    "role": "select-only combobox + top-layer listbox",
+    "focus_border": "one 2px primary stroke around the whole trigger; no inner select outline",
+    "trigger_height_px": { "default": 44, "compact_density": 36, "touch_or_mobile": 48 },
+    "option_min_height_px": { "desktop": 40, "touch_or_mobile": 48 },
+    "popup": { "radius_px": 12, "shadow": 2, "border_px": 0, "viewport_gutter_px": 8, "max_height_px": 384, "placement": "below start; flip above when needed" },
+    "keyboard": ["arrows", "home/end", "page up/down", "typeahead", "enter/space commit", "tab commit and advance", "escape cancel"],
+    "states": ["closed", "open", "active", "selected checkmark", "disabled", "required invalid", "reset", "light", "dark", "reduced motion"],
+    "change_contract": "native select input/change once per changed choice; programmatic .value then GForceUI.dropdown.sync(select)",
+    "unsupported": ["multiple", "optgroup", "editable search"]
+  },
   "component_inventory": [
     "App shell",
     "Top bar",
@@ -480,6 +494,7 @@
     "Textarea",
     "Search field",
     "Native select",
+    "Dropdown",
     "Combobox",
     "Checkbox",
     "Radio",

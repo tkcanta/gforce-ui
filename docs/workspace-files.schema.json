@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "G-Force workspace-files 1.1.0",
+  "title": "G-Force workspace-files 1.2.0",
   "type": "object",
   "additionalProperties": false,
   "required": ["recipeVersion", "profile", "appName", "referenceDate", "storage", "files"],
   "properties": {
-    "recipeVersion": { "const": "1.1.0" },
+    "recipeVersion": { "const": "1.2.0" },
     "profile": { "const": "workspace-files" },
     "appName": { "type": "string", "minLength": 1, "maxLength": 24 },
     "referenceDate": { "type": "string", "format": "date" },

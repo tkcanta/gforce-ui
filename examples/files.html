@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja" data-theme="light" data-density="comfortable" data-gfu-profile="workspace-files" data-gfu-recipe-version="1.1.0">
+<html lang="ja" data-theme="light" data-density="comfortable" data-gfu-profile="workspace-files" data-gfu-recipe-version="1.2.0">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,8 +40,8 @@
           <button type="button" id="create-compact" class="gfu-button gfu-files__compact-create" data-variant="tonal" data-gfu-menu-trigger="create-menu" aria-controls="create-menu" aria-haspopup="menu" aria-expanded="false"><span data-icon="add"></span>新規</button>
         </div>
         <div class="gfu-files__filters" aria-label="ファイルの絞り込み">
-          <label class="gfu-files__filter"><span>種類</span><select id="file-kind"><option value="">すべて</option><option value="folder">フォルダ</option><option value="document">文書</option><option value="image">画像</option><option value="pdf">PDF</option></select></label>
-          <label class="gfu-files__filter"><span>更新日</span><select id="file-date"><option value="">すべて</option><option value="7">7日以内</option><option value="30">30日以内</option></select></label>
+          <div class="gfu-dropdown" data-gfu-dropdown><label for="file-kind">種類</label><select id="file-kind"><option value="">すべて</option><option value="folder">フォルダ</option><option value="document">文書</option><option value="image">画像</option><option value="pdf">PDF</option></select></div>
+          <div class="gfu-dropdown" data-gfu-dropdown><label for="file-date">更新日</label><select id="file-date"><option value="">すべて</option><option value="7">7日以内</option><option value="30">30日以内</option></select></div>
         </div>
         <div class="gfu-files__toolbar" id="file-toolbar" data-selected="false" aria-label="ファイル操作">
           <span class="gfu-files__count" id="file-count" role="status" aria-live="polite"></span>
@@ -255,7 +255,7 @@
     }
   ],
   "profile": "workspace-files",
-  "recipeVersion": "1.1.0",
+  "recipeVersion": "1.2.0",
   "referenceDate": "2026-09-04",
   "storage": {
     "totalGB": 10,

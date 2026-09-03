@@ -24,12 +24,12 @@ for (const ref of index.matchAll(/data-gfu-(?:dialog-open|menu-trigger|popover-t
 
 for (const className of [
   '.gfu-button', '.gfu-field', '.gfu-search', '.gfu-card', '.gfu-tabs', '.gfu-dialog',
-  '.gfu-side-sheet', '.gfu-table', '.gfu-combobox', '.gfu-snackbar', '.gfu-stepper'
+  '.gfu-side-sheet', '.gfu-table', '.gfu-combobox', '.gfu-dropdown', '.gfu-snackbar', '.gfu-stepper'
 ]) {
   assert(css.includes(className), `Compiled CSS missing ${className}`);
 }
 
-for (const symbol of ['initTabs', 'initDialogs', 'initComboboxes', 'initTables', 'showSnackbar']) {
+for (const symbol of ['initTabs', 'initDialogs', 'initComboboxes', 'initDropdowns', 'initTables', 'showSnackbar']) {
   assert(js.includes(symbol), `Behavior bundle missing ${symbol}`);
 }
 

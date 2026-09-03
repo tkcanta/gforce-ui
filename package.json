@@ -1,6 +1,6 @@
 {
   "name": "gforce-ui",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Strict Google-like web application design system built with Tailwind CSS v4 and Vanilla JavaScript.",
   "type": "module",

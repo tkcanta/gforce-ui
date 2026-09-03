@@ -39,6 +39,9 @@ try {
     ['sort', '<button type="button" aria-sort="ascending">名前</button>', 'GFU023'],
     ['target', '<button type="button" data-gfu-dialog-open="missing">Open</button>', 'GFU023'],
     ['label', '<select><option>種類</option></select>', 'GFU023'],
+    ['dropdown-label', '<div class="gfu-dropdown" data-gfu-dropdown><select id="type"><option>文書</option></select></div>', 'GFU027'],
+    ['dropdown-multiple', '<div class="gfu-dropdown" data-gfu-dropdown><label for="type">種類</label><select id="type" multiple><option>文書</option></select></div>', 'GFU027'],
+    ['dropdown-dom', '<div class="gfu-dropdown" data-gfu-dropdown><label for="type">種類</label><select id="type"><option>文書</option></select><button type="button" class="gfu-dropdown__trigger">独自実装</button></div>', 'GFU027'],
     ['recipe', generated.replace('マイドライブ</h1>', 'Dashboard</h1>'), 'GFU025']
   ];
   for (const [name, html, expected] of fixtures) {

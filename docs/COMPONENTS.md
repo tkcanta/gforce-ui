@@ -87,7 +87,8 @@
 |---|---|---|
 | Field | `.gfu-field` | `__label`, `__control`, `__input`, `__support` |
 | Textarea | `.gfu-field__textarea` | Field内 |
-| Select | `.gfu-field__select` | Native select推奨 |
+| Dropdown | `.gfu-dropdown` | `[data-gfu-dropdown]`, label + single select。固定候補の既定 |
+| Select | `.gfu-field__select` | OS標準表示を意図する場合だけ |
 | Select wrapper | `.gfu-select-wrap` | Icon配置 |
 | Search | `.gfu-search` | `[data-gfu-search]`, accessible label |
 | Search clear | `.gfu-icon-button` | `[data-gfu-search-clear]` |
@@ -98,6 +99,31 @@
 | Slider | `.gfu-slider` | `[data-gfu-slider]`, `__input`, `__output` |
 | File upload | `.gfu-file-upload` | `[data-gfu-file-upload]`, input、title、support |
 | Counter | `[data-gfu-counter-field]` | input maxlength + `[data-gfu-counter]` |
+
+### Dropdown
+
+検索不要の単一選択。アプリ側はlabelとnative selectだけを記述し、trigger・listbox・focus・開閉はライブラリへ任せます。部品カタログは `index.html#select-combobox`、実例は `examples/files.html` です。
+
+```html
+<div class="gfu-dropdown" data-gfu-dropdown>
+  <label for="file-type">種類</label>
+  <select id="file-type" name="type">
+    <option value="">すべて</option>
+    <option value="document">文書</option>
+    <option value="pdf">PDF</option>
+  </select>
+</div>
+```
+
+- idと対応するvisible labelは必須。flatな単一選択だけを扱います。複数選択・optgroupは拒否し、検索が必要ならComboboxを使います。
+- 外枠は8px radius。Focus/展開中は操作面全体へ2px相当のPrimary線を1本だけ表示。内側selectは非表示となり、OSの選択メニューは開きません。
+- listboxはPopover APIのtop layer。12px radius、shadow 2、通常borderなし、選択済みcheckmark、active色、disabledを統一。下側に表示し、空間が足りなければ上へ反転します。
+- Arrow/Home/End/PageUp/PageDown・先頭文字検索で候補を移動。Enter/Spaceで確定、Tabで確定して次へ移動、Escapeで取消。トリガーを再クリックして閉じた場合も未確定値は保存しません。
+- nativeのname/value/required/disabled、optionのdisabled/hidden、FormData、resetを維持。値変更時だけnative input/changeを各1回通知します。必須未入力時は説明とaria-invalidを表示しtriggerへfocusします。
+- コードからvalue/options/disabledを変更したら `GForceUI.dropdown.sync(selectElement)` を呼びます。値の正本はselectであり、表示テキストを直接変更しません。業務処理が必要なら通常のchangeイベントを明示的に発火します。
+- `GForceUI.init(newElement)` は再実行しても部品を二重生成しません。現行のPopover API対応ブラウザを対象とし、JavaScript無効時は元のselectが残ります。
+
+キーボードの基準は[WAI-ARIAのselect-only combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/)。これは支援技術の包括的な適合認証ではなく、対象環境でのスクリーンリーダー確認は別途必要です。`appearance: base-select`だけの実装は[対応が限定される](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Customizable_select)ため採用していません。
 
 ### Invalid field
 

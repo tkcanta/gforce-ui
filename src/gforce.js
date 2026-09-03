@@ -1,5 +1,5 @@
 /**
- * G-Force UI 1.1.0
+ * G-Force UI 1.2.0
  * Vanilla JavaScript behavior layer.
  */
 
@@ -529,6 +529,126 @@ function initFileUploads(root = document) {
   });
 }
 
+const dropdownSync = new WeakMap();
+let activeDropdown;
+function initDropdowns(root = document) {
+  qsa('[data-gfu-dropdown]', root).forEach((host) => {
+    const select = host.querySelector('select');
+    if (dropdownSync.has(select)) return;
+    const label = select?.labels?.[0];
+    if (!select?.id || !label || select.multiple || select.size > 1 || select.querySelector('optgroup')) throw new Error('GFU_DROPDOWN: a labelled, flat, single select with an id is required');
+    const button = document.createElement('button');
+    button.type = 'button'; button.id = `${select.id}-trigger`; button.className = 'gfu-dropdown__trigger';
+    button.setAttribute('role', 'combobox'); button.setAttribute('aria-haspopup', 'listbox'); button.setAttribute('aria-expanded', 'false');
+    button.innerHTML = '<span class="gfu-dropdown__caption" aria-hidden="true"></span><span class="gfu-dropdown__values"><span class="gfu-dropdown__value"></span><span class="gfu-dropdown__sizer" aria-hidden="true"></span></span><span class="gfu-dropdown__arrow" data-icon="expand_more"></span>';
+    button.querySelector('.gfu-dropdown__caption').textContent = label.textContent;
+    label.id ||= `${select.id}-label`;
+    const value = button.querySelector('.gfu-dropdown__value'); value.id = `${select.id}-value`;
+    button.setAttribute('aria-labelledby', `${label.id} ${value.id}`);
+    const list = document.createElement('div');
+    list.id = `${select.id}-listbox`; list.className = 'gfu-dropdown__list'; list.popover = 'auto';
+    list.setAttribute('role', 'listbox'); list.setAttribute('aria-labelledby', label.id);
+    button.setAttribute('aria-controls', list.id);
+    const error = document.createElement('p'); error.className = 'gfu-dropdown__error'; error.id = `${select.id}-error`; error.hidden = true; error.setAttribute('role', 'alert');
+    host.append(button, list, error); select.hidden = label.hidden = true;
+    let active = -1, typed = '', typedAt = 0;
+    const opened = () => list.matches(':popover-open');
+    const enabled = () => [...select.options].map((option, index) => !option.disabled && !option.hidden ? index : -1).filter((index) => index >= 0);
+    const position = () => {
+      if (!opened()) return;
+      const rect = button.getBoundingClientRect();
+      list.style.inlineSize = `${Math.min(Math.max(rect.width, 192), innerWidth - 16)}px`;
+      const below = innerHeight - rect.bottom - 16, above = rect.top - 16;
+      const up = below < Math.min(list.scrollHeight, 384) && above > below;
+      list.style.maxBlockSize = `${Math.max(0, Math.min(384, up ? above : below))}px`;
+      list.style.left = `${Math.max(8, Math.min(rect.left, innerWidth - list.offsetWidth - 8))}px`;
+      list.style.top = `${Math.max(8, up ? rect.top - list.offsetHeight - 8 : rect.bottom + 8)}px`;
+      list.dataset.placement = up ? 'top' : 'bottom';
+    };
+    const activate = (index) => {
+      active = index;
+      [...list.children].forEach((item, i) => { item.dataset.active = String(i === active); item.setAttribute('aria-selected', String(i === active)); });
+      const option = list.children[active];
+      if (option) { button.setAttribute('aria-activedescendant', option.id); option.scrollIntoView({ block: 'nearest' }); }
+      else button.removeAttribute('aria-activedescendant');
+    };
+    const sync = () => {
+      value.textContent = select.selectedOptions[0]?.label || '選択してください';
+      button.disabled = select.matches(':disabled'); button.setAttribute('aria-required', String(select.required));
+      if (select.validity.valid) { error.hidden = true; host.dataset.invalid = 'false'; button.setAttribute('aria-invalid', 'false'); }
+      button.setAttribute('aria-describedby', [select.getAttribute('aria-describedby'), !error.hidden && error.id].filter(Boolean).join(' '));
+      list.replaceChildren(); button.querySelector('.gfu-dropdown__sizer').replaceChildren();
+      [...select.options].forEach((option, index) => {
+        const item = document.createElement('div'); item.className = 'gfu-dropdown__option'; item.id = `${select.id}-option-${index}`;
+        item.setAttribute('role', 'option'); item.setAttribute('aria-selected', String(index === select.selectedIndex)); item.setAttribute('aria-disabled', String(option.disabled));
+        item.dataset.index = String(index); item.dataset.selected = String(index === select.selectedIndex); item.hidden = option.hidden;
+        const check = document.createElement('span'); check.className = 'gfu-dropdown__check'; check.dataset.icon = 'check';
+        const text = document.createElement('span'); text.textContent = option.label;
+        item.append(check, text); list.append(item);
+        if (!option.hidden) { const sizer = document.createElement('span'); sizer.textContent = option.label; button.querySelector('.gfu-dropdown__sizer').append(sizer); }
+      });
+      renderIcons(host);
+      if (opened()) { if (button.disabled) list.hidePopover(); else { activate(enabled().includes(active) ? active : enabled()[0] ?? -1); position(); } }
+    };
+    const close = () => { if (opened()) list.hidePopover(); };
+    const commit = () => {
+      if (!enabled().includes(active)) { close(); return; }
+      const changed = select.selectedIndex !== active;
+      select.selectedIndex = active; close(); sync();
+      if (changed) { select.dispatchEvent(new Event('input', { bubbles: true })); select.dispatchEvent(new Event('change', { bubbles: true })); }
+    };
+    const open = () => {
+      sync(); if (button.disabled || opened()) return;
+      closeFloating(); list.showPopover(); button.setAttribute('aria-expanded', 'true');
+      activeDropdown = { position, close }; position();
+      activate(enabled().includes(select.selectedIndex) ? select.selectedIndex : enabled()[0] ?? -1);
+    };
+    button.addEventListener('click', () => { if (opened()) close(); else open(); });
+    button.addEventListener('keydown', (event) => {
+      const wasOpen = opened();
+      if (event.key === 'Escape' && wasOpen) { event.preventDefault(); event.stopPropagation(); close(); return; }
+      if (event.key === 'Tab') { if (wasOpen) commit(); return; }
+      if (event.key === 'ArrowUp' && event.altKey && wasOpen) { event.preventDefault(); commit(); return; }
+      if (['Enter', ' '].includes(event.key)) { event.preventDefault(); if (wasOpen) commit(); else open(); return; }
+      if (['ArrowDown', 'ArrowUp', 'Home', 'End', 'PageDown', 'PageUp'].includes(event.key)) {
+        event.preventDefault(); open(); const options = enabled(); let index = options.indexOf(active);
+        if (event.key === 'Home' || (!wasOpen && event.key === 'ArrowUp')) index = 0;
+        else if (event.key === 'End') index = options.length - 1;
+        else if (wasOpen && !event.altKey) index += ({ ArrowDown: 1, ArrowUp: -1, PageDown: 10, PageUp: -10 })[event.key] || 0;
+        activate(options[Math.max(0, Math.min(index, options.length - 1))] ?? -1); return;
+      }
+      if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        event.preventDefault(); open(); const now = Date.now(); const key = event.key.toLocaleLowerCase();
+        typed = now - typedAt > 700 ? key : typed + key; typedAt = now;
+        const repeated = [...typed].every((char) => char === key), query = repeated ? key : typed;
+        const options = enabled(), start = repeated ? options.indexOf(active) + 1 : 0;
+        const match = [...options.slice(start), ...options.slice(0, start)].find((index) => select.options[index].label.toLocaleLowerCase().startsWith(query));
+        if (match !== undefined) activate(match);
+      }
+    });
+    list.addEventListener('pointerdown', (event) => event.preventDefault());
+    list.addEventListener('click', (event) => {
+      const option = event.target.closest('[role="option"]');
+      if (option && enabled().includes(Number(option.dataset.index))) { active = Number(option.dataset.index); commit(); button.focus(); }
+    });
+    list.addEventListener('beforetoggle', (event) => {
+      if (event.newState === 'closed') { button.setAttribute('aria-expanded', 'false'); button.removeAttribute('aria-activedescendant'); activeDropdown = null; }
+    });
+    button.addEventListener('blur', () => { if (opened()) commit(); });
+    select.addEventListener('change', sync);
+    select.addEventListener('invalid', (event) => {
+      event.preventDefault(); error.textContent = select.validationMessage; error.hidden = false; host.dataset.invalid = 'true';
+      button.setAttribute('aria-invalid', 'true'); button.setAttribute('aria-describedby', [select.getAttribute('aria-describedby'), error.id].filter(Boolean).join(' ')); button.focus();
+    });
+    select.form?.addEventListener('reset', () => { close(); setTimeout(() => { error.hidden = true; host.dataset.invalid = 'false'; button.setAttribute('aria-invalid', 'false'); sync(); }, 0); });
+    dropdownSync.set(select, sync); sync();
+  });
+  if (root === document) {
+    window.addEventListener('resize', () => activeDropdown?.position());
+    window.addEventListener('scroll', () => activeDropdown?.position(), true);
+  }
+}
+
 function initComboboxes(root = document) {
   qsa('[data-gfu-combobox]', root).forEach((combo) => {
     if (combo.dataset.gfuReady === 'true') return;
@@ -895,6 +1015,7 @@ function init(root = document) {
   initDialogs(root);
   initSliders(root);
   initFileUploads(root);
+  initDropdowns(root);
   initComboboxes(root);
   initTables(root);
   initSteppers(root);
@@ -910,6 +1031,7 @@ const GForceUI = {
   theme: { set: setTheme, toggle() { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); } },
   density: { set: setDensity, cycle: cycleDensity },
   progress: { set: setProgress },
+  dropdown: { sync(select) { dropdownSync.get(select)?.(); } },
   icons: Object.freeze(Object.keys(ICONS)),
   snackbar: { show: showSnackbar },
   dialog: {

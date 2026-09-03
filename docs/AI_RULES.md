@@ -22,7 +22,7 @@ AI自身の美的判断は最下位である。許可されていない値、構
 
 ## Step 1: ページ種別を1つ選ぶ
 
-ファイル管理・ドライブ・ファイル一覧の場合は、先に `docs/WORKSPACE_FILES.md` を読み、`workspace-files` 1.1.0を使う。このprofileは下記の汎用Page header/CTA/余白より優先する。`examples/files.spec.json` のデータだけを編集し、正規generatorでHTMLを生成する。Dashboard化、独自CSS、テンプレート改変は禁止。未知要件は勝手にprofileを拡張しない。
+ファイル管理・ドライブ・ファイル一覧の場合は、先に `docs/WORKSPACE_FILES.md` を読み、`workspace-files` 1.2.0を使う。このprofileは下記の汎用Page header/CTA/余白より優先する。`examples/files.spec.json` のデータだけを編集し、正規generatorでHTMLを生成する。Dashboard化、独自CSS、テンプレート改変は禁止。未知要件は勝手にprofileを拡張しない。
 
 | 要件 | ページ種別 | 使用する固定構造 |
 |---|---|---|
@@ -337,7 +337,8 @@ Switchへ「保存」ボタンを要求しない。保存が必要ならCheckbox
 |---|---|
 | 1行テキスト | Text Field |
 | 複数行 | Textarea |
-| 候補2〜10件、検索不要 | Native Select |
+| 候補2〜10件、検索不要 | Dropdown（`.gfu-dropdown[data-gfu-dropdown]`） |
+| OS標準の表示を意図する場合 | Native Select。固定デザインのフィルターでは使わない |
 | 候補が多く検索必要 | Combobox |
 | 日付 | Native `input[type=date]` |
 | 時刻 | Native `input[type=time]` |

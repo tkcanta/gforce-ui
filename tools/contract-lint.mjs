@@ -43,6 +43,11 @@ export async function contractLint(file, source) {
       if (!labelled) add(node, 'GFU023', 'Form control requires an accessible name');
     }
     if (attr(node, 'aria-sort') !== undefined && node.tagName !== 'th' && attr(node, 'role') !== 'columnheader') add(node, 'GFU023', 'aria-sort belongs to th/columnheader, not button');
+    if (attr(node, 'data-gfu-dropdown') !== undefined) {
+      const selects = nodes(node).filter((item) => item.tagName === 'select'), select = selects[0];
+      const labelled = select && nodes(node).some((item) => item.tagName === 'label' && attr(item, 'for') === attr(select, 'id') && text(item).trim());
+      if (!hasClass(node, 'gfu-dropdown') || selects.length !== 1 || !attr(select, 'id') || !labelled || attr(select, 'multiple') !== undefined || Number(attr(select, 'size') || 1) > 1 || nodes(select).some((item) => item.tagName === 'optgroup') || nodes(node).some((item) => hasClass(item, 'gfu-dropdown__trigger'))) add(node, 'GFU027', 'Dropdown requires gfu-dropdown + one labelled, flat single select with an id. Generated trigger/listbox must not be hand-authored');
+    }
     if (node.tagName === 'strong' && ancestor(node.parentNode, (item) => hasClass(item, 'gfu-table') || hasClass(item, 'gfu-files') || hasClass(item, 'gfu-page-title'))) add(node, 'GFU026', 'UI names/headings use role typography, not strong/700');
     if (node.tagName === 'link' && attr(node, 'rel') === 'stylesheet') {
       const href = attr(node, 'href') || '';
