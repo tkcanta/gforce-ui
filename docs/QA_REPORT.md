@@ -1,5 +1,15 @@
 # G-Force UI QA Report
 
+## 2026-09-04 — Landing統合 1.3.0
+
+- `npm run check` 成功（Windows、Node.js 24、既存Chrome使用）。追加のRuntime/開発依存なし。
+- LPは3レシピ×10幅（320〜1920px）で横はみ出し・見出し・リンクを検証。14グループでフォント、コントラスト、キーボード、FAQ、Mega、料金、Mobile dialog、Carousel、JS無効、最大長文、200%表示、問い合わせフォーム、画像、英語固定ラベル、既存ツール非干渉、Reduced motion/Forced colorsを確認。
+- 85不正ケースを拒否。未知入力、危険URL、HTML/絵文字混入、壊れた参照、生成HTMLの手編集、追加CSS/JS、配布CSS/JS/フォント改変などを検証。
+- メニューのfocusout時の誤閉じ、mobile dialogのTab循環、carouselの先頭snap位置を実操作テストで修正。
+- 既存workspaceは30ブラウザグループ、32不正fixture、Floating motion 6ケースを維持。既存CSS/JSの生成元・配布物・files.htmlに差分がないことをGitで確認。
+- LPのDesktop/Mobile画像は `test-results/landing/` に生成。全体構成、見出し、CTA、製品stage、価格比較、狭幅の配置を画像確認。機械検査だけを視覚合格の代用にしていない。
+- この結果は同じ入力・recipe・assetからの生成再現性を対象とする。自然言語からの文章推測、他エンジン、スクリーンリーダーの包括検証、外部POST先の運用は対象外。
+
 ## 2026-09-04 — Native Select禁止・矢印の別行配置禁止
 
 1.2.0で「OS標準表示を意図する場合」という例外と旧Native Selectのカタログを残した判断が不適切だった。旧CSSは生成SVGの親spanに合わない直接子セレクターを使い、矢印が通常フローで次行へ落ちていた。

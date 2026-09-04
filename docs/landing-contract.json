@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "name": "G-Force Landing",
+    "recipeVersion": "1.0.0",
+    "source": "gforce-lp-kit.zip",
+    "scope": "landing pages only"
+  },
+  "routing": {
+    "consumer": "lp-expressive",
+    "business": "lp-enterprise",
+    "mixed": "lp-hybrid"
+  },
+  "tokens": {
+    "font": "GForce Roboto, GForce Noto Sans JP",
+    "fontWeights": [
+      400,
+      500
+    ],
+    "primary": "#0b57d0",
+    "ink": "#202124",
+    "canvas": "#ffffff",
+    "surface": "#f8fafd",
+    "soft": "#e8f0fe",
+    "container": 1280,
+    "wide": 1440,
+    "reading": 760,
+    "gutters": {
+      "compact": 20,
+      "medium": 32,
+      "wide": 64
+    },
+    "sectionSpace": {
+      "compact": 64,
+      "medium": 96,
+      "wide": 128
+    },
+    "heroFont": {
+      "compact": 40,
+      "medium": 56,
+      "wide": 72
+    },
+    "headingFont": {
+      "compact": 32,
+      "medium": 40,
+      "wide": 48
+    },
+    "bodyFont": 16,
+    "descriptionFont": 18,
+    "buttonHeight": 48,
+    "radii": {
+      "control": 9999,
+      "card": 24,
+      "stage": 32
+    },
+    "breakpoints": [
+      600,
+      840,
+      1100
+    ],
+    "motion": {
+      "duration": 180,
+      "reduced": 0
+    },
+    "form": {
+      "radius": 8,
+      "controlMinHeight": 48
+    }
+  },
+  "profiles": {
+    "lp-expressive": {
+      "hero": "center",
+      "features": "bento",
+      "header": "single"
+    },
+    "lp-enterprise": {
+      "hero": "split",
+      "features": "grid",
+      "header": "two-row"
+    },
+    "lp-hybrid": {
+      "hero": "center",
+      "features": "bento",
+      "header": "two-row"
+    }
+  },
+  "sectionOrder": [
+    "announcement?",
+    "header",
+    "hero",
+    "anchor-rail",
+    "features",
+    "capabilities",
+    "products?",
+    "proof?",
+    "pricing?",
+    "migration?",
+    "resources?",
+    "faq",
+    "contact?",
+    "conversion",
+    "footer"
+  ],
+  "enforcement": {
+    "input": "docs/landing.schema.json",
+    "generator": "tools/generate-landing.mjs",
+    "consumerEdits": "JSON data only",
+    "css": "assets/landing.css",
+    "javascript": "assets/landing.js",
+    "classPrefix": "gfu-lp-",
+    "unknownFields": "reject",
+    "unknownAudience": "reject",
+    "unknownProfile": "reject",
+    "rawHTML": "reject",
+    "inlineStyle": "reject",
+    "customStylesheet": "reject",
+    "customScript": "reject",
+    "generatedDOM": "byte-exact",
+    "primaryPerGroup": 1,
+    "priceRecommendationMax": 1,
+    "autoPlay": false,
+    "arbitraryColor": false,
+    "gradients": false,
+    "emoji": false
+  },
+  "verification": {
+    "widths": [
+      320,
+      360,
+      390,
+      600,
+      839,
+      840,
+      1024,
+      1100,
+      1440,
+      1920
+    ],
+    "zoom": 2,
+    "overflowTolerance": 1,
+    "commands": [
+      "npm run check:landing",
+      "npm run lint:design",
+      "node tools/landing-contract-test.mjs",
+      "node tools/landing-browser-test.mjs"
+    ]
+  }
+}

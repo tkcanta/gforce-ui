@@ -1,0 +1,299 @@
+{
+  "recipeVersion": "1.0.0",
+  "profile": "landing",
+  "audience": "business",
+  "locale": "ja",
+  "brand": {
+    "name": "Nexus Work",
+    "description": "チームの仕事を、ひとつの流れに。"
+  },
+  "announcement": {
+    "label": "新しい使い方を見る",
+    "href": "#capabilities"
+  },
+  "hero": {
+    "eyebrow": "チームで進める、新しい働き方。",
+    "headline": [
+      "仕事の流れを、",
+      "ひとつにつなぐ。"
+    ],
+    "summary": "会話、資料、プロジェクトをひとつの場所に。Nexus Workは、チームが同じ情報を見ながら仕事を進めるためのワークスペースです。",
+    "note": "このページは架空の製品を使ったデモです。",
+    "primary": {
+      "label": "プランを比較する",
+      "href": "#pricing"
+    },
+    "secondary": {
+      "label": "導入の流れを見る",
+      "href": "#migration"
+    },
+    "media": null
+  },
+  "features": {
+    "title": "仕事が進む。チームがつながる。",
+    "intro": "会話から資料、次のアクションまで。必要な情報を見渡せるように。",
+    "items": [
+      {
+        "title": "会話の先に、必要な資料を。",
+        "body": "メッセージと資料を同じ場所にまとめて、確認と共有の流れを整えます。",
+        "media": null
+      },
+      {
+        "title": "チームで、同じ状況を見る。",
+        "body": "プロジェクトの予定と進捗をまとめ、次にすることを一緒に確認できます。",
+        "media": null
+      },
+      {
+        "title": "情報を、必要な人へ。",
+        "body": "共有する範囲を整理して、チームの連携を進めやすくします。",
+        "media": null
+      }
+    ]
+  },
+  "capabilities": {
+    "title": "いつもの仕事を、ひとつの場所で。",
+    "items": [
+      {
+        "label": "話し合う",
+        "title": "会話と情報を、一緒に。",
+        "body": "話し合いながら資料を確認して、チームの認識をそろえましょう。",
+        "media": null
+      },
+      {
+        "label": "整理する",
+        "title": "必要な資料が、見渡せる。",
+        "body": "プロジェクトごとに資料を整理し、探すところから迷わないようにします。",
+        "media": null
+      },
+      {
+        "label": "進める",
+        "title": "次のアクションを、明確に。",
+        "body": "担当と予定を共有して、それぞれの作業を進められます。",
+        "media": null
+      }
+    ]
+  },
+  "products": [
+    {
+      "title": "メッセージ",
+      "body": "チームで同じ情報を確認し、作業を進められます。",
+      "link": {
+        "label": "機能を見る",
+        "href": "#capabilities"
+      }
+    },
+    {
+      "title": "ドキュメント",
+      "body": "チームで同じ情報を確認し、作業を進められます。",
+      "link": {
+        "label": "機能を見る",
+        "href": "#capabilities"
+      }
+    },
+    {
+      "title": "プロジェクト",
+      "body": "チームで同じ情報を確認し、作業を進められます。",
+      "link": {
+        "label": "機能を見る",
+        "href": "#capabilities"
+      }
+    },
+    {
+      "title": "共有ファイル",
+      "body": "チームで同じ情報を確認し、作業を進められます。",
+      "link": {
+        "label": "機能を見る",
+        "href": "#capabilities"
+      }
+    }
+  ],
+  "proof": {
+    "title": "チームの可能性を、もっと。",
+    "stats": [
+      {
+        "value": "3つ",
+        "label": "使い方のデモ",
+        "source": {
+          "label": "デモの内容",
+          "href": "#capabilities"
+        }
+      }
+    ],
+    "quotes": [
+      {
+        "quote": "資料を探すところから、話し合いを始めるところまで。一つの流れでつながる感覚を目指しました。",
+        "author": "Nexus Work デモ制作者（架空の利用者実績ではありません）",
+        "source": {
+          "label": "UIライブラリについて",
+          "href": "https://github.com/tkcanta/gforce-ui"
+        }
+      }
+    ],
+    "logos": []
+  },
+  "pricing": {
+    "title": "チームに合ったプランを。",
+    "note": "デモ価格です。実際の契約・請求は行いません。表示額は1人あたり・税込。",
+    "currency": "JPY",
+    "plans": [
+      {
+        "name": "Starter",
+        "description": "小さなチームで始める。",
+        "monthly": 800,
+        "annual": 8000,
+        "recommended": false,
+        "features": [
+          "共有ワークスペース",
+          "資料とメッセージを整理",
+          "チームでプロジェクトを確認"
+        ],
+        "action": {
+          "label": "導入手順を見る",
+          "href": "#migration"
+        }
+      },
+      {
+        "name": "Business",
+        "description": "チームの連携を広げる。",
+        "monthly": 1600,
+        "annual": 16000,
+        "recommended": true,
+        "features": [
+          "共有ワークスペース",
+          "資料とメッセージを整理",
+          "チームでプロジェクトを確認"
+        ],
+        "action": {
+          "label": "導入手順を見る",
+          "href": "#migration"
+        }
+      },
+      {
+        "name": "Enterprise",
+        "description": "組織全体で活用する。",
+        "monthly": 2400,
+        "annual": 24000,
+        "recommended": false,
+        "features": [
+          "共有ワークスペース",
+          "資料とメッセージを整理",
+          "チームでプロジェクトを確認"
+        ],
+        "action": {
+          "label": "導入手順を見る",
+          "href": "#migration"
+        }
+      }
+    ]
+  },
+  "migration": {
+    "title": "今の仕事を、そのまま次へ。",
+    "body": "必要な準備を確認して、チームのペースで導入しましょう。",
+    "steps": [
+      {
+        "title": "使い方を整理する",
+        "body": "チームで共有したい情報と作業を確認します。"
+      },
+      {
+        "title": "小さく試してみる",
+        "body": "一つのプロジェクトから、日々の使い方を試します。"
+      },
+      {
+        "title": "チームへ広げる",
+        "body": "確認できた手順を、ほかのメンバーにも共有します。"
+      }
+    ],
+    "action": {
+      "label": "よくある質問を見る",
+      "href": "#faq"
+    }
+  },
+  "resources": [
+    {
+      "title": "仕事の始め方",
+      "category": "活用ガイド",
+      "body": "日々の作業を見直すためのヒントをご紹介します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      },
+      "media": null
+    },
+    {
+      "title": "チームで共有する",
+      "category": "活用ガイド",
+      "body": "日々の作業を見直すためのヒントをご紹介します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      },
+      "media": null
+    },
+    {
+      "title": "資料を整理する",
+      "category": "活用ガイド",
+      "body": "日々の作業を見直すためのヒントをご紹介します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      },
+      "media": null
+    }
+  ],
+  "faq": [
+    {
+      "question": "このページで製品を利用できますか？",
+      "answer": "このページはUIライブラリのデモです。製品の提供、登録、課金は行いません。"
+    },
+    {
+      "question": "自分のサービスに合わせて変更できますか？",
+      "answer": "入力JSONの文章、リンク、画像を変更できます。構成や見た目は固定レシピから生成されます。"
+    },
+    {
+      "question": "スマートフォンでも使えますか？",
+      "answer": "画面の幅に合わせて、ナビゲーションや比較表、製品画面の見せ方が切り替わります。"
+    }
+  ],
+  "conversion": {
+    "title": "チームの次の一歩を、一緒に。",
+    "body": "利用方法とプランを比較して、チームに合う進め方を見つけましょう。"
+  },
+  "footer": {
+    "groups": [
+      {
+        "title": "製品",
+        "links": [
+          {
+            "label": "機能",
+            "href": "#features"
+          },
+          {
+            "label": "使い方",
+            "href": "#capabilities"
+          }
+        ]
+      },
+      {
+        "title": "サポート",
+        "links": [
+          {
+            "label": "よくある質問",
+            "href": "#faq"
+          },
+          {
+            "label": "G-Force UI",
+            "href": "https://github.com/tkcanta/gforce-ui"
+          }
+        ]
+      }
+    ],
+    "legal": [
+      {
+        "label": "ライセンス",
+        "href": "https://github.com/tkcanta/gforce-ui/blob/main/LICENSE"
+      }
+    ],
+    "copyright": "Nexus Work — G-Force UI demonstration"
+  },
+  "contact": null
+}

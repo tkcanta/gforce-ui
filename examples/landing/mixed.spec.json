@@ -1,0 +1,222 @@
+{
+  "recipeVersion": "1.0.0",
+  "profile": "landing",
+  "audience": "mixed",
+  "locale": "ja",
+  "brand": {
+    "name": "Citrus Arena",
+    "description": "プレイヤーと運営を、ひとつの舞台へ。"
+  },
+  "announcement": {
+    "label": "新しい使い方を見る",
+    "href": "#capabilities"
+  },
+  "hero": {
+    "eyebrow": "プレイする人にも、支える人にも。",
+    "headline": [
+      "好きが集まる。",
+      "次の舞台が始まる。"
+    ],
+    "summary": "大会に参加する人と、開催する人をつなぐプラットフォーム。Citrus Arenaで、コミュニティの新しい可能性を見つけましょう。",
+    "note": "このページは架空の製品を使ったデモです。",
+    "primary": {
+      "label": "機能を見る",
+      "href": "#features"
+    },
+    "secondary": {
+      "label": "運営の流れを見る",
+      "href": "#migration"
+    },
+    "media": null
+  },
+  "features": {
+    "title": "その熱量を、次の舞台へ。",
+    "intro": "参加する楽しさも、開催する準備も。コミュニティの活動をひとつにつなぎます。",
+    "items": [
+      {
+        "title": "あなたに合う大会を見つける。",
+        "body": "ゲームや参加条件を確認しながら、挑戦したい大会を探せます。",
+        "media": null
+      },
+      {
+        "title": "チームの仲間と、つながる。",
+        "body": "活動の予定と情報を共有して、次の試合へ向けて準備しましょう。",
+        "media": null
+      },
+      {
+        "title": "開催する側にも、使いやすく。",
+        "body": "募集から当日の案内まで、参加者に伝える情報を整理できます。",
+        "media": null
+      }
+    ]
+  },
+  "capabilities": {
+    "title": "それぞれの立場で、楽しめる。",
+    "items": [
+      {
+        "label": "参加する",
+        "title": "次の挑戦を、見つけよう。",
+        "body": "大会の内容を知って、自分のペースに合うイベントを選べます。",
+        "media": null
+      },
+      {
+        "label": "開催する",
+        "title": "みんなが集まる場を、つくる。",
+        "body": "参加条件、日程、当日の案内を整理して、大会を準備します。",
+        "media": null
+      },
+      {
+        "label": "続ける",
+        "title": "一度の出会いを、次につなぐ。",
+        "body": "結果や活動の記録を残して、コミュニティの次の一歩に役立てましょう。",
+        "media": null
+      }
+    ]
+  },
+  "products": [
+    {
+      "title": "大会の発見",
+      "body": "参加者と運営のそれぞれに必要な情報を整理します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      }
+    },
+    {
+      "title": "チームの交流",
+      "body": "参加者と運営のそれぞれに必要な情報を整理します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      }
+    },
+    {
+      "title": "運営の準備",
+      "body": "参加者と運営のそれぞれに必要な情報を整理します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      }
+    },
+    {
+      "title": "記録の共有",
+      "body": "参加者と運営のそれぞれに必要な情報を整理します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      }
+    }
+  ],
+  "proof": null,
+  "pricing": null,
+  "migration": {
+    "title": "大会のアイデアを、形に。",
+    "body": "開催する目的から、参加者への案内まで。必要な準備を順番に確認しましょう。",
+    "steps": [
+      {
+        "title": "企画を決める",
+        "body": "ゲーム、参加条件、日程を整理して、大会の輪郭をつくります。"
+      },
+      {
+        "title": "参加者を募る",
+        "body": "大会の楽しみ方と参加方法を、わかりやすく伝えます。"
+      },
+      {
+        "title": "当日を迎える",
+        "body": "進行と結果を共有し、参加者と次の大会へつなげます。"
+      }
+    ],
+    "action": {
+      "label": "よくある質問を見る",
+      "href": "#faq"
+    }
+  },
+  "resources": [
+    {
+      "title": "大会を企画する",
+      "category": "運営ガイド",
+      "body": "コミュニティのイベントを進めるためのヒントを紹介します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      },
+      "media": null
+    },
+    {
+      "title": "参加者へ案内する",
+      "category": "運営ガイド",
+      "body": "コミュニティのイベントを進めるためのヒントを紹介します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      },
+      "media": null
+    },
+    {
+      "title": "活動の記録を残す",
+      "category": "運営ガイド",
+      "body": "コミュニティのイベントを進めるためのヒントを紹介します。",
+      "link": {
+        "label": "使い方を見る",
+        "href": "#capabilities"
+      },
+      "media": null
+    }
+  ],
+  "faq": [
+    {
+      "question": "このページで製品を利用できますか？",
+      "answer": "このページはUIライブラリのデモです。製品の提供、登録、課金は行いません。"
+    },
+    {
+      "question": "自分のサービスに合わせて変更できますか？",
+      "answer": "入力JSONの文章、リンク、画像を変更できます。構成や見た目は固定レシピから生成されます。"
+    },
+    {
+      "question": "スマートフォンでも使えますか？",
+      "answer": "画面の幅に合わせて、ナビゲーションや比較表、製品画面の見せ方が切り替わります。"
+    }
+  ],
+  "conversion": {
+    "title": "次の舞台を、ここから。",
+    "body": "参加する人も、開催する人も。あなたに合った使い方を見つけましょう。"
+  },
+  "footer": {
+    "groups": [
+      {
+        "title": "製品",
+        "links": [
+          {
+            "label": "機能",
+            "href": "#features"
+          },
+          {
+            "label": "使い方",
+            "href": "#capabilities"
+          }
+        ]
+      },
+      {
+        "title": "サポート",
+        "links": [
+          {
+            "label": "よくある質問",
+            "href": "#faq"
+          },
+          {
+            "label": "G-Force UI",
+            "href": "https://github.com/tkcanta/gforce-ui"
+          }
+        ]
+      }
+    ],
+    "legal": [
+      {
+        "label": "ライセンス",
+        "href": "https://github.com/tkcanta/gforce-ui/blob/main/LICENSE"
+      }
+    ],
+    "copyright": "Citrus Arena — G-Force UI demonstration"
+  },
+  "contact": null
+}

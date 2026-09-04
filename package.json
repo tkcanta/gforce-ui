@@ -1,6 +1,6 @@
 {
   "name": "gforce-ui",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "private": true,
   "description": "Strict Google-like web application design system built with Tailwind CSS v4 and Vanilla JavaScript.",
   "type": "module",
@@ -9,10 +9,12 @@
     "check:files": "node tools/generate-files.mjs examples/files.spec.json examples/files.html --check",
     "build": "node tools/build-css.mjs && node -e \"require('node:fs').copyFileSync('src/gforce.js', 'assets/gforce.js')\"",
     "lint:design": "node tools/design-lint.mjs index.html examples",
-    "test": "node tools/smoke-test.mjs && node tools/floating-lint-test.mjs && node tools/files-contract-test.mjs",
-    "test:browser": "node tools/floating-motion-test.mjs && node tools/files-browser-test.mjs",
-    "check": "npm run build && npm run check:files && npm run lint:design && npm test && npm run test:browser",
-    "serve": "npx http-server . -p 4173 -c-1"
+    "test": "node tools/smoke-test.mjs && node tools/floating-lint-test.mjs && node tools/files-contract-test.mjs && node tools/landing-contract-test.mjs",
+    "test:browser": "node tools/floating-motion-test.mjs && node tools/files-browser-test.mjs && node tools/landing-browser-test.mjs",
+    "check": "npm run build && npm run check:files && npm run check:landing && npm run lint:design && npm test && npm run test:browser",
+    "serve": "npx http-server . -p 4173 -c-1",
+    "generate:landing": "node tools/generate-landing.mjs --examples",
+    "check:landing": "node tools/generate-landing.mjs --examples --check"
   },
   "dependencies": {
     "tailwindcss": "^4.1.10"

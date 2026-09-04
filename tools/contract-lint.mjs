@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateFiles } from './generate-files.mjs';
+import { landingLint } from './landing-lint.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const css = await readFile(resolve(root, 'src/gforce.css'), 'utf8');
@@ -19,6 +20,8 @@ const ancestor = (node, predicate) => node && (predicate(node) ? node : ancestor
 export async function contractLint(file, source) {
   const document = parse(source, { sourceCodeLocationInfo: true });
   const elements = nodes(document).filter((node) => node.tagName);
+  // LP is a separate contract, not an exception to workspace rules. Fingerprints prevent removing the profile to bypass it.
+  if (elements.some((node) => (attr(node, 'data-gfu-profile') || '').startsWith('lp-') || attr(node, 'id') === 'landing-config' || (attr(node, 'class') || '').split(/\s+/).some((name) => name.startsWith('gfu-lp-') || name.startsWith('gf-')) || /(?:^|\/)landing\.(?:css|js)$/.test(attr(node, 'href') || attr(node, 'src') || ''))) return landingLint(file, source, elements);
   const issues = [];
   const add = (node, rule, message) => issues.push({ index: node?.sourceCodeLocation?.startOffset || 0, rule, message });
   const byId = new Map();

@@ -1,0 +1,137 @@
+{
+  "recipeVersion": "1.0.0",
+  "profile": "landing",
+  "audience": "consumer",
+  "locale": "ja",
+  "brand": {
+    "name": "Orbit",
+    "description": "アイデアと毎日を、ひとつにつなぐ。"
+  },
+  "announcement": {
+    "label": "新しい使い方を見る",
+    "href": "#capabilities"
+  },
+  "hero": {
+    "eyebrow": "毎日に、もう少しの余白を。",
+    "headline": [
+      "ひらめきから、",
+      "次の一歩へ。"
+    ],
+    "summary": "気になることを見つけて、まとめて、動き出す。Orbitは、あなたの考えを自然な流れでつなぐワークスペースです。",
+    "note": "このページは架空の製品を使ったデモです。",
+    "primary": {
+      "label": "できることを見る",
+      "href": "#features"
+    },
+    "secondary": {
+      "label": "使い方を知る",
+      "href": "#capabilities"
+    },
+    "media": null
+  },
+  "features": {
+    "title": "思いついた、その先まで。",
+    "intro": "毎日の小さな作業を、ひとつの心地よい流れへ。",
+    "items": [
+      {
+        "title": "気になることを、ひとまとめに。",
+        "body": "ページやメモを一か所へ。あとから探す時間を減らして、大切なことに集中できます。",
+        "media": null
+      },
+      {
+        "title": "考えを、すぐに形に。",
+        "body": "メモを並べ替えて、アイデアの輪郭を見つけましょう。",
+        "media": null
+      },
+      {
+        "title": "続きを、どこからでも。",
+        "body": "必要な情報を整理して、次の作業を始めやすくします。",
+        "media": null
+      }
+    ]
+  },
+  "capabilities": {
+    "title": "あなたのペースで、使いこなす。",
+    "items": [
+      {
+        "label": "見つける",
+        "title": "好奇心のままに、見つけよう。",
+        "body": "参考になるページや言葉を保存して、アイデアの引き出しをつくります。",
+        "media": null
+      },
+      {
+        "label": "まとめる",
+        "title": "ばらばらな情報を、ひとつの景色に。",
+        "body": "資料とメモを同じ場所に。大事なことが見渡せるように整理します。",
+        "media": null
+      },
+      {
+        "label": "動き出す",
+        "title": "小さな一歩を、今日から。",
+        "body": "次にすることを決めたら、迷わず作業を始められます。",
+        "media": null
+      }
+    ]
+  },
+  "products": [],
+  "proof": null,
+  "pricing": null,
+  "migration": null,
+  "resources": [],
+  "faq": [
+    {
+      "question": "このページで製品を利用できますか？",
+      "answer": "このページはUIライブラリのデモです。製品の提供、登録、課金は行いません。"
+    },
+    {
+      "question": "自分のサービスに合わせて変更できますか？",
+      "answer": "入力JSONの文章、リンク、画像を変更できます。構成や見た目は固定レシピから生成されます。"
+    },
+    {
+      "question": "スマートフォンでも使えますか？",
+      "answer": "画面の幅に合わせて、ナビゲーションや比較表、製品画面の見せ方が切り替わります。"
+    }
+  ],
+  "conversion": {
+    "title": "次の一歩を、ここから。",
+    "body": "できることを見つけて、あなたに合った使い方を考えてみましょう。"
+  },
+  "footer": {
+    "groups": [
+      {
+        "title": "製品",
+        "links": [
+          {
+            "label": "機能",
+            "href": "#features"
+          },
+          {
+            "label": "使い方",
+            "href": "#capabilities"
+          }
+        ]
+      },
+      {
+        "title": "サポート",
+        "links": [
+          {
+            "label": "よくある質問",
+            "href": "#faq"
+          },
+          {
+            "label": "G-Force UI",
+            "href": "https://github.com/tkcanta/gforce-ui"
+          }
+        ]
+      }
+    ],
+    "legal": [
+      {
+        "label": "ライセンス",
+        "href": "https://github.com/tkcanta/gforce-ui/blob/main/LICENSE"
+      }
+    ],
+    "copyright": "Orbit — G-Force UI demonstration"
+  },
+  "contact": null
+}

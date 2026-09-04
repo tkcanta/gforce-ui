@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 — 2026-09-04
+
+- 添付LP Kitを一般向け・法人向け・両方向けの固定レシピとして統合。
+- LP用JSON契約・schema・生成器・生成物完全一致・配布asset検証・ブラウザ回帰を追加。
+- LPのCSS/JSを独立し、既存workspaceのソースとAPIを維持。単一のcheck/CIで両方を検証。
+- 導入、移行、契約の適用範囲、AI用の入力手順を整備。
+
 ## Unreleased
 
 - Menu／Popoverが初期`hidden`属性付きでも、閉状態を確定してから初回Transitionを開始するよう修正。

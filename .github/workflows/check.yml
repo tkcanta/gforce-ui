@@ -14,9 +14,11 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run check
-      - run: git diff --exit-code -- assets examples/files.html
+      - run: git diff --exit-code -- assets examples
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: files-review-evidence
-          path: test-results/files/
+          name: ui-review-evidence
+          path: |
+            test-results/files/
+            test-results/landing/
