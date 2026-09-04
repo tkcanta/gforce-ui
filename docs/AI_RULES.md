@@ -4,6 +4,8 @@
 
 ## 0. 適用順序
 
+先に用途を確定する。製品説明・比較・問い合わせなどの公開LPは [LP固定レシピ](current/landing.md) と [LP機械契約](landing-contract.json)を使い、入力JSONから生成する。LP用の例外で本書の業務UI規則を緩めない。本書の以降のページ種別・数値・部品規則は業務UIに適用する。
+
 矛盾がある場合は、次の順序で従う。
 
 1. `docs/design-contract.json`

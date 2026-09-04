@@ -6,7 +6,7 @@
 
 目標はデザイナーの感覚を説明することではない。AIまたは実装者が画面ごとに異なる解釈をする余地を削り、出力を同じ視覚文法へ強制することである。
 
-このシステムが対象とするのは、Google検索トップのようなマーケティング画面ではなく、Google Workspace／Google Cloud Consoleに近い業務用Webアプリである。
+本書の数値・部品規則はGoogle Workspace／Google Cloud Consoleに近い業務用Webアプリに適用する。公開LPは独立した [LP固定レシピ](current/landing.md) が担当する。既存業務UIの数値をLPに合わせて緩めない。
 
 ---
 

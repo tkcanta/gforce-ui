@@ -1,10 +1,10 @@
 # G-Force UI
 
-**Google Workspace／Google Cloud系Webアプリの視覚文法を、数値・DOM・状態遷移・禁止規則として固定したUIライブラリです。**
+**Google Workspace／Google Cloud系の業務UIと、Chrome／Workspace型の公開LPを、数値・DOM・状態遷移・禁止規則として固定したUIライブラリです。**
 
 抽象的な「Googleっぽく」「Material風に」という指示を排除し、弱いAIモデルでも同じ判断へ収束することを目的にしています。
 
-現在のバージョン：**1.2.0** · [バージョン履歴](#バージョン履歴)
+現在のバージョン：**1.3.0** · [バージョン履歴](#バージョン履歴)
 
 - Tailwind CSS v4
 - Vanilla JavaScript
@@ -17,10 +17,19 @@
 - 45以上の動作デモ
 - デザイン違反Lint
 - AI向け機械可読JSON契約
+- LP用3レシピ、JSON入力検証、生成物・配布assetの一致検査
 
 > G-Force UIはGoogle公式製品ではなく、Google LLCとの提携・承認関係もありません。Material DesignおよびGoogle Workspaceの公開ガイドを参照し、業務用Webアプリ向けに独自実装したデザインシステムです。
 
 ## まず開くもの
+
+| 作るもの | 入口 | 動作例 |
+|---|---|---|
+| 業務ツール・管理画面 | [既存部品API](docs/COMPONENTS.md) | [カタログ](index.html) |
+| ファイル管理 | [workspace-files](docs/WORKSPACE_FILES.md) | [作例](examples/files.html) |
+| 公開LP | [LP固定レシピ](docs/current/landing.md) | [一般向け](examples/landing/consumer.html)・[法人向け](examples/landing/business.html)・[両方向け](examples/landing/mixed.html) |
+
+LPは利用者区分から構成を固定し、入力JSONだけを編集します。`npm run generate:landing` で作例を生成します。LP専用CSS/JSを使うため、業務UIの見出し・密度・入力・Dropdownの契約は変わりません。詳細の正本は [資料索引](docs/INDEX.md)から選べます。
 
 **禁止：OS標準の選択メニュー、値と下向き矢印の別行配置。** カタログ・作例も例外なし。旧Select/Select wrapperは廃止し、共通Dropdownへ統一しました。GFU028/GFU029とブラウザの実寸検査で再発を防ぎます。
 
@@ -107,6 +116,8 @@ gforce-ui/
 
 ## 強制順序
 
+最初に業務操作画面か公開LPかを確定します。LPの場合は `docs/design-contract.json` のprofile routingに従い、[LP契約・schema・生成器](docs/current/landing.md)を使います。以下の数値と画面構成は業務UIの契約です。LPの例外を業務画面に持ち込みません。
+
 AIや実装者は、仕様が衝突した場合に次の順序で従います。
 
 1. `docs/design-contract.json`
@@ -182,10 +193,12 @@ npm run check
 このコマンドは次を順番に実行します。
 
 1. Tailwind CSSビルド
-2. workspace-files生成物の完全一致確認
+2. workspace-filesとLP生成物の完全一致確認
 3. Design Lint
 4. Smoke TestとLint／不正入力の回帰テスト
-5. ブラウザー回帰テスト（Menu／PopoverのMotion、workspace-filesの9幅・6状態・操作・寸法・フォーカス）
+5. ブラウザー回帰テスト（Menu／Popover、workspace-files、LPの3レシピ・10幅・操作・フォーカス・入力・非干渉）
+
+LPでは入力JSON・recipe版・配布asset・assetパスが同じなら同じHTMLを生成し、自由なCSSや手編集を拒否します。任意の自然言語から同じ文章を推測することや、すべてのOSでのピクセル一致を保証するものではありません。未知の構成は自由制作に切り替えず、契約拡張として扱います。
 
 既存のGoogle Chromeで検証する場合は、環境変数`GFU_BROWSER_CHANNEL=chrome`を設定するとChromiumの追加ダウンロードは不要です。PowerShellでは`$env:GFU_BROWSER_CHANNEL = 'chrome'`を設定してから実行します。
 
@@ -259,6 +272,12 @@ Action group内のFilled Buttonは最大1個にすること。
 
 `package.json`のバージョンとGit履歴に基づく記録です。日付は日本時間。同じバージョン番号のまま行った追加修正は、コミットで区別しています。
 
+### 1.3.0 — 2026-09-04
+
+- LP Kitを3つの固定レシピへ統合。hero、製品stage、bento、タブ、サービス一覧、出典付き実績・引用、価格、導入、カルーセル、FAQ、問い合わせ、最終CTAをJSONから生成。
+- 未知項目・不正URL・HTML混入・任意スタイル・生成DOM改変・配布asset改変を拒否。LPを独立bundleにし、既存workspaceのAPIと検証を維持。
+- [移行・生成手順](docs/current/landing.md)、[統合元の記録](docs/history/lp-kit-integration.md)、[LP Kitライセンス](LICENSE-LP-KIT)。
+
 ### 1.2.0 — 2026-09-04
 
 - **追加**：共通Dropdown。操作面全体のフォーカス枠、スタイル済みlistbox、キーボード操作、必須・無効・リセット状態を統一。ファイル種別・更新日フィルターに適用。[実装コミット](https://github.com/tkcanta/gforce-ui/commit/457259a56af01124761f7442127062f52f7277df)
@@ -281,4 +300,5 @@ Action group内のFilled Buttonは最大1個にすること。
 ## ライセンス
 
 MIT License。詳細は`LICENSE`を参照してください。
+LP Kit由来の実装には [LICENSE-LP-KIT](LICENSE-LP-KIT) の著作権表示も適用します。
 同梱フォントはSIL Open Font Licenseです。著作権表示・ライセンス・固定取得元は`assets/fonts/`に同梱しています。

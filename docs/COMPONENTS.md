@@ -1,5 +1,7 @@
 # G-Force UI Component API
 
+本書は業務UIのAPI。公開LPの部品と構成は [LP固定レシピ](current/landing.md)を参照し、生成されたDOMを使用する。LPのCSS/JSを業務UIへ混ぜない。
+
 ## 共通属性
 
 | 属性 | 値 | 用途 |

@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "G-Force UI",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "language": "ja",
     "objective": "Google WorkspaceおよびGoogle Cloud系Webアプリの視覚文法を、AIが推測せず再現できるように強制する",
     "compliance_mode": "whitelist",
@@ -11,6 +11,11 @@
       "Tailwind CSS v4 compiled CSS",
       "Vanilla JavaScript ES Modules"
     ]
+  },
+  "profile_routing": {
+    "workspace": "Existing tokens, components and page decision tree below remain unchanged",
+    "landing": {"contract": "docs/landing-contract.json", "schema": "docs/landing.schema.json", "rules": "docs/current/landing.md", "generator": "tools/generate-landing.mjs", "audience_required": true},
+    "mix_profiles_on_one_page": false
   },
   "non_negotiable_principles": [
     "色はsemantic tokenだけを使う。HTML内のHEX、rgb、hsl、Tailwind arbitrary colorは禁止",

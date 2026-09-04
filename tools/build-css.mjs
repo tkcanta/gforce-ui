@@ -60,3 +60,5 @@ await writeFile(outputPath, css, 'utf8');
 console.log(`Built ${outputPath}`);
 console.log(`Scanned ${files.length} files; supplied ${candidates.size} class candidates.`);
 await copyFile(join(root, 'src', 'workspace-files.js'), join(root, 'assets', 'workspace-files.js'));
+// LP uses a separate, scoped bundle; never merge its global resets into the workspace bundle.
+for (const name of ['landing.css', 'landing.js']) await copyFile(join(root, 'src', name), join(root, 'assets', name));
